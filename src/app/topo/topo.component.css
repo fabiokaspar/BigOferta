@@ -2,3 +2,9 @@
     background-color: #fcfcfc;
     padding: 1%;
 }
+
+@media(max-width: 575.98px) {
+    .carousel {
+        display: none;
+    }
+}

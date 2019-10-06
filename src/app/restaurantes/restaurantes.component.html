@@ -1,0 +1,21 @@
+<div class="container">
+  <div class="row text-center mb-3">
+    <h2 class="col-12 mb-2" style="color: #333;">Rodízio, Buffet, Carnes especiais, Feijoada e mais!</h2>
+    <h4 class="col-12" style="color: #666; font-size: 1.2em; font-weight: 400;">Conheça as melhores ofertas de restaurantes:</h4>
+  </div>
+
+  <ul class="list-group list-group-flush w-75">
+    <li class="list-group-item h-25" *ngFor="let oferta of ofertas">
+        <img class="img-fluid float-left rounded mr-5 h-auto" [src]="oferta.imagens[0].url" alt="Card image">
+        <div class="descricao">
+          <h4>{{oferta.titulo}}</h4>
+          <h6>{{oferta.descricao}}</h6>
+          <p>Anunciado por: <b>{{oferta.anunciante}}</b></p>
+          <p class="text-warning preco">R$ {{oferta.valor}}</p>
+          <a [routerLink]="['/oferta', oferta.id]" class="btn btn-outline-primary rounded">Ver oferta</a>
+        </div>
+     
+    </li>
+  </ul>
+
+</div>

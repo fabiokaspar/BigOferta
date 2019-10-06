@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="row text-center mb-3">
+    <h2 class="col-12 mb-2" style="color: #333;">{{oferta?.titulo}}</h2>
+    <h4 class="col-12" style="color: #666; font-size: 1.2em; font-weight: 400;">Aproveite essa oferta especial:
+    </h4>
+  </div>
+
+  <div class="row">
+    <div class="col-6 imagens clearfix">
+      <img class="root img-thumbnail img-fluid" [src]="oferta?.imagens[0].url">
+      <span *ngFor="let x of oferta?.imagens">
+        <img class="img-thumbnail img-fluid float-left" [src]="x.url">
+      </span>
+    </div>
+
+    <div class="col-6 info w-auto mt-5">
+      <p class="mb-2" style="font-weight: 400; font-size: 1.2em;">Detalhes:</p>
+      <p>Oferta: <span>{{oferta.titulo}}</span></p>
+      <p>Anunciado por: <span>{{oferta.anunciante}}</span></p>
+      <p>Categoria: {{oferta.categoria}}</p>
+      <p class="mt-4 mb-2">Por apenas: <span class="text-warning">R$ {{oferta.valor}}</span></p>
+      <a type="button" class="text-white font-weight-bolder btn btn-warning">Adicionar ao carrinho</a>
+    </div>
+  </div>
+
+  <div class="mt-5 w-50">
+    <tabset>
+      <tab heading="Como usar" id="como-usar" (selectTab)="onSelect($event)">
+        <span class="ml-3">Dica de como usar:</span>
+      </tab>
+      <tab heading="Onde fica" id="onde-fica" (selectTab)="onSelect($event)">
+          <span class="ml-3">Local:</span>
+      </tab>
+    </tabset>
+    
+    <div class="p-3">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+
+</div>

@@ -23,6 +23,7 @@
     "bootstrap": "^4.3.1",
     "bootswatch": "^4.3.1",
     "core-js": "^3.2.1",
+    "json-server": "^0.15.1",
     "ngx-bootstrap": "^5.1.2",
     "rxjs": "^6.5.3",
     "tslib": "^1.9.0",
