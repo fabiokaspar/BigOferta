@@ -1,0 +1,51 @@
+<div class="container">
+    <div *ngIf="!carrinhoService.carrinhoEstaVazio(); else carrinhoVazio">
+        <div class="row text-center mb-3">
+            <h2 class="col-12 mb-2" style="color: #333;">Lista de pedidos</h2>
+            <h4 class="col-12" style="color: #666; font-size: 1.2em; font-weight: 400;">
+                Confira abaixo sua lista de pedidos antes de efetuar a compra
+            </h4>
+        </div>
+
+        <ul class="mx-auto list-group list-group-flush mb-5">
+            <li *ngFor="let ordemCompra of listaOrdemCompra" class="d-flex justify-content-between list-group-item">
+                <img class="img-fluid img-thumbnail float-left rounded mr-3" [src]="ordemCompra.imagem"
+                    alt="Card image">
+
+                <div class="flex-fill">
+                    <h6 class="mt-2">{{ordemCompra.titulo}}</h6>
+                    <p class="mt-2 mb-0 pt-2 pb-0">Por: {{ordemCompra.anunciante}}</p>
+                    <p class="mt-1 mb-0 pt-0 pb-0">{{ordemCompra.descricao}}</p>
+                </div>
+
+                <div class="flex-fill text-right mt-2">
+                    <span class="mr-3">Quantidade:</span>
+                    <span class="mr-3">
+                        <a type="button" class="btn btn-sm btn-warning rounded font-weight-bolder text-white mr-1"
+                            (click)="decrementaItem(ordemCompra)">-
+                        </a>
+                        <span class="mr-1 font-weight-bolder">{{ordemCompra.quantidade}}</span>
+                        <a type="button" class="btn btn-sm btn-success rounded font-weight-bolder text-white"
+                            (click)="incrementaItem(ordemCompra)">+
+                        </a>
+                    </span>
+
+                    <span class="mr-2">Preço:</span>
+                    <span>{{ordemCompra.valor * ordemCompra.quantidade | currency: 'BRL'}} </span>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <ng-template #carrinhoVazio>
+        <div class="row text-center mb-3">
+            <h2 class="col-12 mb-2" style="color: #333;">Aproveite as mega ofertas especiais que separamos pra você!</h2>
+            <h4 class="col-12" style="color: #666; font-size: 1.2em; font-weight: 400;">
+                Seu carrinho de compras se encontra vazio no momento.
+            </h4>
+        </div>
+    </ng-template>
+    
+    <span class="h3 float-right">{{carrinhoService.totalCarrinho() | currency:'BRL' }}</span>
+    <span class="h3 text-primary d-inline-block float-right mr-3">Valor Total: </span>
+</div>

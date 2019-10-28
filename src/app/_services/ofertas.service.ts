@@ -1,7 +1,9 @@
+import { Observable, throwError, of } from 'rxjs';
 import { environment } from './../../environments/environment';
 import { Oferta } from '../_models/Oferta';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { retry, debounceTime, map, catchError, distinctUntilChanged, switchMap, distinct } from 'rxjs/operators';
 
 @Injectable()
 export class OfertasService {
@@ -30,13 +32,8 @@ export class OfertasService {
       .then((ofertas: Oferta[]) => ofertas);
   }
 
-  public getOfertaDetail(id): Promise<Oferta> {
-    return this.http.get(`${environment.URI_API}/ofertas/${id}`)
-      .toPromise()
-      .then((oferta: Oferta) => {
-        console.log(oferta);
-        return oferta;
-      });
+  public getOfertaDetail(id): Observable<Oferta> {
+    return this.http.get<Oferta>(`${environment.URI_API}/ofertas/${id}`);
   }
 
   public getComoUsarOferta(id): Promise<string> {
@@ -55,6 +52,13 @@ export class OfertasService {
         console.log(response)
         return response.descricao;
       });
+  }
+
+  public pesquisaPorOfertas(query: string): Observable<Oferta[]>
+  {
+    return this.http.get<Oferta[]>(`${environment.URI_API}/ofertas?descricao_like=${query}`).pipe(
+      retry(10)
+    );
   }
 
 }

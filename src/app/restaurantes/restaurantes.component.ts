@@ -10,6 +10,8 @@ import { Oferta } from '../_models/Oferta';
 })
 export class RestaurantesComponent implements OnInit {
   public ofertas: Oferta[];
+  // public data: Date = new Date(2019, 8, 30);
+
   constructor(private ofertasService: OfertasService) { }
 
   ngOnInit() {

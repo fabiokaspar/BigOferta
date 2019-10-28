@@ -1,6 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { AppRoutingModule } from './app-routing.module';
 import { TabsModule } from 'ngx-bootstrap/tabs';
@@ -14,6 +14,17 @@ import { OfertaComponent } from './oferta/oferta.component';
 import { DiversaoComponent } from './diversao/diversao.component';
 import { ComoUsarComponent } from './oferta/como-usar/como-usar.component';
 import { OndeFicaComponent } from './oferta/onde-fica/onde-fica.component';
+import { DescricaoReduzidaPipe } from './_utils/descricao-reduzida.pipe';
+
+import { registerLocaleData } from '@angular/common';
+import localePt from '@angular/common/locales/pt';
+import { OrdemCompraComponent } from './ordem-compra/ordem-compra.component';
+
+import { CarrinhoService } from './_services/carrinho.service';
+import { OfertasService } from './_services/ofertas.service';
+
+// the second parameter 'pt' is optional
+registerLocaleData(localePt, 'pt');
 
 @NgModule({
    declarations: [
@@ -25,7 +36,9 @@ import { OndeFicaComponent } from './oferta/onde-fica/onde-fica.component';
       OfertaComponent,
       DiversaoComponent,
       ComoUsarComponent,
-      OndeFicaComponent
+      OndeFicaComponent,
+      DescricaoReduzidaPipe,
+      OrdemCompraComponent
    ],
    imports: [
       BrowserModule,
@@ -34,7 +47,11 @@ import { OndeFicaComponent } from './oferta/onde-fica/onde-fica.component';
       AppRoutingModule,
       TabsModule.forRoot()
    ],
-   providers: [],
+   providers: [
+      CarrinhoService,
+      OfertasService,
+      { provide: LOCALE_ID, useValue: 'pt-Pt'}
+   ],
    bootstrap: [
       AppComponent
    ]

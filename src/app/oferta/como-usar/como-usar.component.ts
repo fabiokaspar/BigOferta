@@ -1,6 +1,6 @@
 import { OfertasService } from './../../_services/ofertas.service';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-como-usar',
@@ -20,13 +20,17 @@ export class ComoUsarComponent implements OnInit {
     this.getTextoComoUsar();
   }
 
-  private getTextoComoUsar(): void 
+  private getTextoComoUsar(): void
   {
-    const id = this.route.parent.snapshot.params['id'];
-    this.ofertasService.getComoUsarOferta(id).then((texto: string) => {
-      // debugger;
-      this.textoComoUsar = texto;
-    });
+    // const id = this.route.parent.snapshot.params['id'];
+    this.route.parent.params.subscribe((params: Params) => {
+      console.log(params)
+      const id = params.id;
+      this.ofertasService.getComoUsarOferta(id).then((texto: string) => {
+        // debugger;
+        this.textoComoUsar = texto;
+      });
+    }, error => console.log(error))
   }
 
 }

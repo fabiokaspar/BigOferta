@@ -13,7 +13,7 @@
                 <h4 class="card-title">{{oferta.titulo}}</h4>
                 <p class="card-text text-left ml-2 mb-2">{{oferta.descricao}}</p>
 
-                <p class="text-warning preco d-inline-block mr-1">R$ {{oferta.valor}}</p>
+                <p class="text-warning preco d-inline-block mr-1">{{oferta.valor | currency:'BRL'}}</p>
                 <a [routerLink]="['/oferta', oferta.id]" routerLinkActive="router-link-active"  class="btn btn-sm btn-outline-primary rounded float-right">Ver oferta</a>
             </div>
         </div>
