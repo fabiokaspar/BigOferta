@@ -1,64 +1,65 @@
 <div class="fixed-top">
     <div class="area-logo">
         <div class="container">
-            <img src="../../assets/logo.png" class="d-inline-block" alt="Passaro Urbano">
-
-            <div class="d-inline-block w-50 position-absolute" style="z-index: 1;">
-                <input type="text" class="form-control rounded mt-2" placeholder="Pesquise por ofertas..." #termoPesquisa
-                    (input)="pesquisaPorOfertas(termoPesquisa.value)">
-
-                <div class="list-group">
-                    <!-- pipe async se inscreve no observable e passa a receber dados -->
-                    <a *ngFor="let oferta of (ofertas | async)"
-                        [routerLink]="['/oferta', oferta.id]"
-                        routerLinkActive="router-link-active" 
-                        (click)="limpaPesquisa(oferta.id)"
+            <img src="/assets/logo.png" class="d-inline-block" alt="Passaro Urbano">
+            
+            <div class="d-inline-block w-50 position-absolute mr-5" style="z-index: 1;">
+                    <input type="text" class="form-control rounded mt-2" placeholder="Pesquise por ofertas..."
+                    #termoPesquisa (input)="pesquisaPorOfertas(termoPesquisa.value)">
+                    
+                    <div class="list-group">
+                        <!-- pipe async se inscreve no observable e passa a receber dados -->
+                        <a *ngFor="let oferta of (ofertas | async)" [routerLink]="['/oferta', oferta.id]"
+                        routerLinkActive="router-link-active" (click)="limpaPesquisa(oferta.id)"
                         class="list-group-item list-group-item-action">
                         {{oferta.descricao | descricaoReduzida:0:60 }}
                     </a>
                 </div>
             </div>
-
-            <a class="carrinho" routerLink="/ordem-compra">
-                <img src="../../assets/carrinho.png" class="d-inline-block float-right" alt="Seu Carrinho">
-            </a>
+            
+            <div *ngIf="authService?.isLoggedIn()"
+                class="d-inline position-relative" style="left: 2%;">
+        
+                <a class="profile" routerLink="/">
+                    <img src="/assets/user.png" class="d-inline-block img-thumbnail ml-4 img-fluid float-right" alt="Seu Carrinho">
+                </a>
+                <a class="carrinho" routerLink="/ordem-compra">
+                    <img src="../../assets/carrinho.png" class="d-inline-block img-fluid float-right" alt="Seu Carrinho">
+                </a>
+            </div>
+            
+            
         </div>
     </div>
     <div class="bg-primary">
         <nav class="container navbar navbar-expand-sm bg-primary navbar-dark p-0">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" [routerLink]="['']" routerLinkActive="router-link-active">Destaques</a>
+                    <a class="nav-link" [routerLink]="['']" routerLinkActive="router-link-active" href="#">Destaques</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" [routerLink]="['/restaurante']"
-                        routerLinkActive="router-link-active">Restaurantes</a>
+                        routerLinkActive="router-link-active" href="#">Restaurantes</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" [routerLink]="['/diversao']" href="#">Diversão</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Ofertas</a>
+
+                <li *ngIf="!authService?.isLoggedIn()" class="nav-item">
+                    <a class="nav-link" [routerLink]="['/cadastro']" href="#">Cadastro</a>
+                </li>
+                <li *ngIf="!authService?.isLoggedIn()" class="nav-item">
+                    <a class="nav-link" [routerLink]="['/login']" href="#">Login</a>
+                </li>
+                <li *ngIf="authService?.isLoggedIn()" class="nav-item">
+                    <a class="nav-link" (click)="logout()" [routerLink]="['/login']" href="#">Logout</a>
                 </li>
             </ul>
+            <span *ngIf="authService?.isLoggedIn()" 
+                class="pl-2 pr-2 position-absolute navbar-text text-white bg-success"
+                style="right: -5%;">
+                Olá, {{getUsername()}}!
+            </span>
         </nav>
     </div>
-</div>
-
-<div class="carousel" style="position: relative; top: 9.0em;">
-
-    <carousel [showIndicators]="false">
-        <slide>
-            <img class="img-fluid d-block mx-auto" width="92%" src="../../assets/banners/img_1.jpg" alt="banner1">
-        </slide>
-        <slide>
-            <img class="img-fluid d-block mx-auto" width="92%" src="../../assets/banners/img_2.jpg" alt="banner2">
-        </slide>
-        <slide>
-            <img class="img-fluid d-block mx-auto" width="92%" src="../../assets/banners/img_3.jpg" alt="banner3">
-        </slide>
-        <slide>
-            <img class="img-fluid d-block mx-auto" width="92%" src="../../assets/banners/img_4.jpg" alt="banner4">
-        </slide>
-    </carousel>
 </div>

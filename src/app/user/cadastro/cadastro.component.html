@@ -1,0 +1,81 @@
+<div class="container w-50 border p-1 h-auto">
+    <p class="font-weight-bolder text-dark text-center p-1 mb-0">Informe seus dados para cadastro:</p>
+    <form class="clearfix" [formGroup]="formulario" (ngSubmit)="submitForm()">
+        <div class="form-group mt-0 mb-0">
+            <label for="idNome" class="ml-1">Nome: </label>
+            <input type="text" id="idNome" formControlName="name" placeholder="Nome completo"
+                class="form-control w-75 rounded">
+
+            <div *ngIf="formulario.get('name').hasError('required') && 
+            formulario.get('name').touched" class="msg-invalid mb-0 mt-1">
+                Informe seu nome completo
+            </div>
+
+            <div *ngIf="formulario.get('name').hasError('minlength') && 
+            formulario.get('name').touched" class="msg-invalid mb-0 mt-1">
+                Nome deve conter no mínimo 3 caracteres
+            </div>
+
+            <div *ngIf="formulario.get('name').hasError('maxlength') && 
+            formulario.get('name').touched" class="msg-invalid mb-0 mt-1">
+                Nome deve conter no máximo 50 caracteres
+            </div>
+        </div>
+
+        <div class="form-group mt-0 mb-0">
+            <label for="idUsername" class="ml-1 mt-3">Nome de usuário: </label>
+            <input type="text" id="idUsername" formControlName="username" placeholder="Escolha um nome de usuário"
+                class="form-control w-75 rounded">
+            
+            <div *ngIf="formulario.get('username').hasError('required') && 
+                formulario.get('username').touched" class="msg-invalid mb-0 mt-1">
+                Informe um username
+            </div>
+
+            <div *ngIf="formulario.get('username').hasError('minlength') && 
+            formulario.get('username').touched" class="msg-invalid mb-0 mt-1">
+                Nome deve conter no mínimo 6 caracteres
+            </div>
+
+            <div *ngIf="formulario.get('username').hasError('maxlength') && 
+            formulario.get('username').touched" class="msg-invalid mb-0 mt-1">
+                Nome deve conter no máximo 20 caracteres
+            </div>
+        </div>
+
+        <label for="idDataNasc" class="ml-1 mt-3">Data de Nascimento: </label>
+        <input type="text" id="idDataNasc" formControlName="dateOfBirth" placeholder="dd/mm/aaaa"
+            class="form-control rounded w-50" bsDatepicker [bsConfig]="bsConfig">
+
+        <label for="idSenha" class="ml-1 mt-3">Senha: </label>
+        <input type="password" id="idSenha" formControlName="password" placeholder="Senha"
+            class="form-control rounded w-75">
+
+        <div class="form-group mt-0 mb-0">
+            <label for="idConfirmaSenha" class="ml-1 mt-3">Digite a senha novamente: </label>
+            <input type="password" id="idConfirmaSenha" formControlName="confirmPassword" placeholder="Senha"
+            class="form-control rounded w-75">
+        </div>
+        
+        <label for="idCidade" class="ml-1 mt-3">Cidade: </label>
+        <input type="text" id="idCidade" formControlName="city" placeholder="Cidade"
+        class="form-control rounded w-75">
+        
+        <div class="form-group mt-0 mb-0">
+            <label for="idPais" class="ml-1 mt-3">País: </label>
+            <input type="text" id="idPais" formControlName="country" placeholder="País" class="form-control rounded w-50">
+        </div>
+
+        <div *ngIf="error === 'DuplicateUserName'" style="clear:both" class="msg-invalid mb-0 ml-2 mt-3">
+            Usuário já existente!
+        </div>
+
+        <input class="btn btn-outline-primary mt-4 float-right rounded w-25 font-weight-bolder" type="submit"
+            value="Cadastrar">
+
+        <a class="btn btn-link float-left mt-4 mb-1" [routerLink]="['/login']" routerLinkActive="router-link-active">Já tem cadastro? Entre
+            com sua conta</a>
+        
+
+    </form>
+</div>

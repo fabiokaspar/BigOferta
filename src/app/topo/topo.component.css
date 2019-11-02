@@ -3,8 +3,22 @@
     padding: 1%;
 }
 
-@media(max-width: 575.98px) {
-    .carousel {
-        display: none;
-    }
+.profile img {
+    width: 5%;
+}
+
+.carrinho img {
+    width: 4%;
+    opacity: 0.9;
+}
+
+a.carrinho:hover img {
+    width: 4.5%;
+    opacity: 1;
+    background-attachment: fixed;
+}
+
+a.profile:hover img {
+    background: #e5e5e5;
+    width: 5.1%;
 }

@@ -1,5 +1,3 @@
-// import { ImagemUrl } from './ImagemUrl';
-
 export class Oferta {
     public id?: number;
     public categoria?: string;

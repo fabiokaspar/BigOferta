@@ -1,6 +1,6 @@
 import { Observable, throwError, of } from 'rxjs';
 import { environment } from './../../environments/environment';
-import { Oferta } from '../_models/Oferta';
+import { Oferta } from '../_models/oferta';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { retry, debounceTime, map, catchError, distinctUntilChanged, switchMap, distinct } from 'rxjs/operators';

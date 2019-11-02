@@ -1,0 +1,33 @@
+<div class="container border p-1 h-auto">
+    <p class="font-weight-bolder text-dark text-center p-1 mb-0">Informe seus dados de login:</p>
+    <form class="clearfix" [formGroup]="formulario" (ngSubmit)="submitForm()">
+        <div class="form-group mt-0 mb-0">
+            <label for="idUsername" class="ml-1">Nome de usuário: </label>
+            
+            <input type="text" id="idUsername" formControlName="username" placeholder="Usuário"
+            class="form-control rounded">
+
+            <div *ngIf="formulario.get('username').hasError('required') && 
+            formulario.get('username').touched" class="msg-invalid mb-0 mt-1">
+                Usuário obrigatório 
+            </div>
+        </div>
+        
+        <div class="form-group mt-0 mb-0">
+            <label for="idSenha" class="ml-1 mt-3">Senha: </label>
+            <input type="password" id="idSenha" formControlName="password" placeholder="Senha"
+                class="form-control rounded">
+            
+            <div *ngIf="formulario.get('password').hasError('required') && 
+            formulario.get('password').touched" class="msg-invalid mb-0 mt-1">
+                Senha obrigatório
+            </div>
+
+            <div *ngIf="error === 401" class="msg-invalid mb-0 mt-1">
+                Usuário ou senha inválido
+            </div>
+        </div>
+        <a class="btn btn-link mt-4" [routerLink]="['/cadastro']" routerLinkActive="router-link-active">Não tem conta? Crie já uma conta grátis!</a>
+        <input class="btn btn-outline-primary mt-4 mb-1 float-right rounded w-25 font-weight-bolder" type="submit" value="Logar">
+    </form>
+</div>

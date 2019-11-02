@@ -1,0 +1,35 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 400;
+}
+
+.container {
+    position: relative;
+    top: 10.0em;
+    background: #fcfcfc;
+}
+
+input {
+    width: 90%;
+}
+
+
+p {
+    font-weight: 500;
+    font-size: 1.1em;
+    /* text-align: center; */
+}
+
+form {
+    padding: 10px;
+}
+
+.btn-link {
+    color: #00c;
+}
+
+.container p {
+    opacity: 0.8;
+    border: 1px dotted gray;
+    background: rgba(143, 165, 206, 0.333);
+}

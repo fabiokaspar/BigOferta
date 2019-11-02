@@ -1,9 +1,10 @@
+import { AuthService } from './../_services/auth.service';
 import { OfertasService } from './../_services/ofertas.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Observable, from, fromEvent, interval, Subscription, throwError, of, Subject } from 'rxjs';
-import { Oferta } from '../_models/Oferta';
+import { Oferta } from '../_models/oferta';
 import { switchMap, debounceTime, catchError, distinctUntilChanged, map } from 'rxjs/operators';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-topo',
@@ -14,9 +15,10 @@ import { Router } from '@angular/router';
 export class TopoComponent implements OnInit {
   public ofertas: Observable<Oferta[]>;
   public subjectPesquisa: Subject<string> = new Subject<string>();
-
+  
   constructor(
-    private ofertasService: OfertasService,
+    public ofertasService: OfertasService,
+    public authService: AuthService,
     private router: Router
   ) { }
 
@@ -25,11 +27,12 @@ export class TopoComponent implements OnInit {
       debounceTime(500),
       distinctUntilChanged(),
       switchMap((termo: string) => {
+        console.log('***'+ termo+"***")
         if (termo === '')
         {
           return of([]);
         }
-
+        
         return this.ofertasService.pesquisaPorOfertas(termo);
       }),
       catchError(error => {
@@ -41,16 +44,27 @@ export class TopoComponent implements OnInit {
     this.ofertas.subscribe(x => console.log(x))
   }
 
+  getUsername()
+  {
+    const username = JSON.parse(localStorage.getItem('user')).username;
+    return username;
+  }
+
   public pesquisaPorOfertas(termoBusca: string): void
   {
     // console.log(termoBusca);
-    this.subjectPesquisa.next(termoBusca)
+    this.subjectPesquisa.next(termoBusca.trim())
   }
 
   public limpaPesquisa(ofertaId: number): void
   {
     this.subjectPesquisa.next();
     this.router.navigate(['/oferta', ofertaId]).then()
+  }
+
+  public logout()
+  {
+    this.authService.logout()
   }
 
 }

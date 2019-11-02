@@ -1,4 +1,7 @@
 <!-- favicon-generator.org -->
 <app-topo></app-topo>
-<router-outlet></router-outlet>
+<router-outlet 
+    (activate)="onActivate($event)" 
+    (deactivate)="onDeactivate($event)">
+</router-outlet>
 <app-rodape></app-rodape>

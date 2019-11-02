@@ -2,7 +2,7 @@ import { ItemCarrinho } from './../_models/item-carrinho';
 import { CarrinhoService } from './../_services/carrinho.service';
 import { Component, OnInit } from '@angular/core';
 import { OfertasService } from '../_services/ofertas.service';
-import { Oferta } from '../_models/Oferta';
+import { Oferta } from '../_models/oferta';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { TabDirective } from 'ngx-bootstrap/tabs';
 
