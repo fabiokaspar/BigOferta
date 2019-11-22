@@ -28,12 +28,12 @@ export class OfertasService {
 
   public getOfertasRestaurante(): Observable<Oferta[]>
   {
-    return this.http.get<Oferta[]>(`${environment.URI_API}/ofertas?categoria=restaurante`);
+    return this.http.get<Oferta[]>(`${environment.URI_API}/ofertas?category=restaurantes`);
   }
 
   public getOfertasDiversao(): Observable<Oferta[]>
   {
-    return this.http.get<Oferta[]>(`${environment.URI_API}/ofertas?categoria=diversao`);
+    return this.http.get<Oferta[]>(`${environment.URI_API}/ofertas?category=diversao`);
   }
 
   public getOfertaDetail(id): Observable<Oferta> {

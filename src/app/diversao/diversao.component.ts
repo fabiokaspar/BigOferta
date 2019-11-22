@@ -19,7 +19,7 @@ export class DiversaoComponent implements OnInit {
 
   private getOfertas(): void {
     this.ofertasService.getOfertasDiversao()
-      .then((ofertas: Oferta[]) => {
+      .subscribe((ofertas: Oferta[]) => {
         this.ofertas = ofertas;
       });
   }
