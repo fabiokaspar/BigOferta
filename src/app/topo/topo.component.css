@@ -1,10 +1,24 @@
+.container {
+    position: relative;
+    top: 0;
+}
+
+.nav-link, .nav-link:visited {
+    color: #fff;
+}
+
+.nav-link:focus, .nav-link:hover {
+    background-color: rgb(50, 50, 65);
+    color: #fff;
+}
+
 .area-logo {
-    background-color: #fcfcfc;
+    background-color: rgba(197, 223, 245, 0.4);
     padding: 1%;
 }
 
 .profile img {
-    width: 5%;
+    width: 4.5%;
 }
 
 .carrinho img {
@@ -13,12 +27,28 @@
 }
 
 a.carrinho:hover img {
-    width: 4.5%;
+    width: 4.1%;
     opacity: 1;
     background-attachment: fixed;
 }
 
 a.profile:hover img {
     background: #e5e5e5;
-    width: 5.1%;
+}
+
+a.preco-carrinho {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 0px 2px;
+    /* text-align: center; */
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    border-radius: 10%;
+    float: right;
+    z-index: 10;
+    position: relative;
+    left: 50px;
+    top: 45px;
 }

@@ -1,10 +1,11 @@
+import { CarrinhoService } from './../_services/carrinho.service';
 import { AuthService } from './../_services/auth.service';
 import { OfertasService } from './../_services/ofertas.service';
-import { Component, OnInit, Input } from '@angular/core';
-import { Observable, from, fromEvent, interval, Subscription, throwError, of, Subject } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { Observable, throwError, of, Subject } from 'rxjs';
 import { Oferta } from '../_models/oferta';
-import { switchMap, debounceTime, catchError, distinctUntilChanged, map } from 'rxjs/operators';
-import { Router, ActivatedRoute } from '@angular/router';
+import { switchMap, debounceTime, catchError,distinctUntilChanged } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-topo',
@@ -15,56 +16,61 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class TopoComponent implements OnInit {
   public ofertas: Observable<Oferta[]>;
   public subjectPesquisa: Subject<string> = new Subject<string>();
-  
+
   constructor(
     public ofertasService: OfertasService,
     public authService: AuthService,
+    public carrinhoService: CarrinhoService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit() {
+    if (this.authService.isLoggedIn()) {
+      this.carrinhoService.loadCartFromStorage();
+    }
+
     this.ofertas = this.subjectPesquisa.pipe(
       debounceTime(500),
       distinctUntilChanged(),
       switchMap((termo: string) => {
-        console.log('***'+ termo+"***")
-        if (termo === '')
-        {
+        console.log('***' + termo + '***');
+        if (termo === '') {
           return of([]);
         }
-        
+
         return this.ofertasService.pesquisaPorOfertas(termo);
       }),
       catchError(error => {
-        console.log(error)
-        return throwError(error)
+        console.log(error);
+        return throwError(error);
       })
     );
 
-    this.ofertas.subscribe(x => console.log(x))
+    this.ofertas.subscribe(x => console.log(x));
   }
 
-  getUsername()
+  criarOferta()
   {
-    const username = JSON.parse(localStorage.getItem('user')).username;
+    
+  }
+
+  getUsername() {
+    const username = JSON.parse(localStorage.getItem('user')).userName;
     return username;
   }
 
-  public pesquisaPorOfertas(termoBusca: string): void
-  {
+  public pesquisaPorOfertas(termoBusca: string): void {
     // console.log(termoBusca);
-    this.subjectPesquisa.next(termoBusca.trim())
+    this.subjectPesquisa.next(termoBusca.trim());
   }
 
-  public limpaPesquisa(ofertaId: number): void
-  {
+  public limpaPesquisa(ofertaId: number): void {
     this.subjectPesquisa.next();
-    this.router.navigate(['/oferta', ofertaId]).then()
+    this.router.navigate(['/oferta', ofertaId]).then();
   }
 
-  public logout()
-  {
-    this.authService.logout()
+  public logout() {
+    this.authService.logout();
+    this.carrinhoService.esvaziaCarrinho();
   }
-
 }
