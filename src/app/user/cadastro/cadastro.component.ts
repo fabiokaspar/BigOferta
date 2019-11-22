@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { BsDatepickerConfig } from 'ngx-bootstrap';
 import { User } from 'src/app/_models/user';
 import { AuthService } from 'src/app/_services/auth.service';
 import { isArray } from 'util';
@@ -12,9 +11,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./cadastro.component.css']
 })
 export class CadastroComponent implements OnInit {
-  bsConfig: Partial<BsDatepickerConfig>;
   formulario: FormGroup;
-  error = '';
+  error = null;
   user: User;
 
   constructor(
@@ -24,23 +22,17 @@ export class CadastroComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.bsConfig = {
-      containerClass: 'theme-dark-blue',
-      isAnimated: true
-    };
     this.createForm();
   }
 
   public createForm()
   {
     this.formulario = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-      username: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
-      dateOfBirth: [''],
-      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
-      city: [''],
-      country: [''],
-      confirmPassword: ['', Validators.required]
+      name: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+      email: [null, [Validators.pattern('^[a-zA-Z0-9.]+@[a-zA-Z0-9]+.[a-zA-Z]+$')]],
+      userName: [null, [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
+      password: [null, [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
+      confirmPassword: [null, Validators.required]
     }, {
       validator: this.passwordMatchValidator
     });
@@ -56,13 +48,13 @@ export class CadastroComponent implements OnInit {
 
   public submitForm()
   {
-    this.treatValueOfDateBeforeSubmitting();
-    this.error = '';
+    this.error = null;
 
     if (this.formulario.valid)
     {
-      console.log("VALID")
+      console.log("VALID");
       let user: User = this.formulario.value;
+
       console.log(user)
       this.authService.register(user).subscribe(
         (data: User) => {
@@ -92,19 +84,14 @@ export class CadastroComponent implements OnInit {
     }
     else {
       console.log("INVALID")
-      this.formulario.get('name').markAsTouched();
-      this.formulario.get('username').markAsTouched();
-      this.formulario.get('password').markAsTouched();
-      this.formulario.get('confirmPassword').markAsTouched();
-    }
-  }
-
-  private treatValueOfDateBeforeSubmitting()
-  {
-    console.log(this.formulario.get('dateOfBirth').value)
-    if (this.formulario.get('dateOfBirth').value === '')
-    {
-      this.formulario.get('dateOfBirth').setValue(new Date());
+      const keysArray = [
+        'name', 'email', 'username', 'password', 'confirmPassword'
+      ];
+  
+      for (const key of keysArray)
+      {
+        this.formulario.get(key).markAsTouched();
+      }
     }
   }
 

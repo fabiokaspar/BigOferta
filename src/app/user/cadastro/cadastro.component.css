@@ -4,15 +4,14 @@
 }
 
 .container {
-    position: relative;
-    top: 10.0em;
+    /* position: relative;
+    top: 10.0em; */
     background: #fcfcfc;
 }
 
 input {
     width: 90%;
 }
-
 
 p {
     font-weight: 500;

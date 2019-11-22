@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
@@ -8,6 +9,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JwtModule, JwtHelperService } from '@auth0/angular-jwt';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { FileUploadModule } from 'ng2-file-upload';
 
 import { AppComponent } from './app.component';
 import { TopoComponent } from './topo/topo.component';
@@ -21,17 +24,20 @@ import { OndeFicaComponent } from './oferta/onde-fica/onde-fica.component';
 import { UserComponent } from './user/user.component';
 import { LoginComponent } from './user/login/login.component';
 import { CadastroComponent } from './user/cadastro/cadastro.component';
-import { DescricaoReduzidaPipe } from './_utils/descricao-reduzida.pipe';
+import { FormularioOrdemCompraComponent } from './ordem-compra/formulario-ordem-compra/formulario-ordem-compra.component';
+import { OrdemCompraComponent } from './ordem-compra/ordem-compra.component';
+import { BannerComponent } from './banner/banner.component';
+import { PainelOfertasComponent } from './user/painel-ofertas/painel-ofertas.component';
+import { PhotoEditorComponent } from './photo-editor/photo-editor.component';
 
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
-import { OrdemCompraComponent } from './ordem-compra/ordem-compra.component';
 
+import { DescricaoReduzidaPipe } from './_utils/descricao-reduzida.pipe';
 import { CarrinhoService } from './_services/carrinho.service';
 import { OfertasService } from './_services/ofertas.service';
-import { BannerComponent } from './banner/banner.component';
 import { AuthService } from './_services/auth.service';
-
+import { OfertaResolver } from './_resolvers/oferta-resolver';
 
 registerLocaleData(localePt, 'pt');
 
@@ -55,15 +61,21 @@ export function attachToken() {
       UserComponent,
       LoginComponent,
       CadastroComponent,
-      BannerComponent
+      BannerComponent,
+      FormularioOrdemCompraComponent,
+      PainelOfertasComponent,
+      PhotoEditorComponent
    ],
    imports: [
       BrowserModule,
       BrowserAnimationsModule,
       BsDatepickerModule.forRoot(),
+      BsDropdownModule.forRoot(),
       CarouselModule.forRoot(),
       HttpClientModule,
+      FileUploadModule,
       AppRoutingModule,
+      ModalModule.forRoot(),
       FormsModule,
       ReactiveFormsModule,
       JwtModule.forRoot({
@@ -80,6 +92,7 @@ export function attachToken() {
       OfertasService,
       AuthService,
       JwtHelperService,
+      OfertaResolver,
       { provide: LOCALE_ID, useValue: 'pt-Pt'}
    ],
    bootstrap: [
