@@ -1,0 +1,194 @@
+<div class="container" style="position: relative; top: 10em;">
+  <button class="add btn btn-outline-primary btn-sm rounded" style="font-size: 1.0em;" (click)="openModal(template)">
+    <span style="font-size: 1.1em; font-weight: bold;">+</span> Criar oferta
+  </button>
+
+  <h4 class="h3 text-center">Painel de gerenciamento de ofertas</h4>
+  <ng-template #template>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Informe os dados da nova oferta</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <form #formulario="ngForm" id="formulario" (ngSubmit)="cadastrarOferta()">
+        <!-- dropdown -->
+        <div class="form-group">
+          <label class="mb-2">Categoria:</label>
+
+          <div class="btn-group d-block" dropdown>
+            <button id="button-basic" dropdownToggle type="button" class="btn border btn-sm rounded dropdown-toggle">
+              {{novaOferta.category || 'selecione uma categoria'}} <span class="caret"></span>
+            </button>
+            
+            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu selet" role="menu">
+
+              <li role="menuitem"><a class="dropdown-item" (click)="setCategory('restaurantes')">Restaurantes</a></li>
+              <li role="menuitem"><a class="dropdown-item" (click)="setCategory('diversão')">Diversão</a></li>
+              <li role="menuitem"><a class="dropdown-item" (click)="setCategory('hotelaria')">Hotelaria</a></li>
+            </ul>
+          </div>
+        </div>
+        <!------->
+
+        <div class="form-group">
+          <label for="title" class="mt-2">Título:</label>
+          <input id="title" type="text" class="form-control rounded w-50" placeholder="Informe o título da oferta"
+            name="title"
+            required
+            [(ngModel)]="novaOferta.title"
+            #title="ngModel">
+        </div>
+
+        <div class="form-group">
+          <label for="description" class="mt-2">Descrição:</label>
+          <textarea id="description" rows="3" class="form-control rounded" placeholder="Digite a descrição da oferta"
+            id="description"
+            required
+            #description="ngModel"
+            name="description"
+            [(ngModel)]="novaOferta.description"
+            ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="advertiser" class="mt-2">Anunciante:</label>
+          <input id="advertiser" 
+            type="text" 
+            #advertiser="ngModel"
+            name="advertiser"
+            [(ngModel)]="novaOferta.advertiser"
+            required
+            class="form-control rounded w-75" 
+            placeholder="Informe o título da oferta">
+        </div>
+
+        <div class="form-group">
+
+          <label for="price" class="mt-2">Preço da oferta:</label>
+          
+          <div class="input-group mb-2">
+            <div class="input-group-prepend">
+              <div class="input-group-text rounded-left" style="font-size: 1em;">
+                R$
+              </div>
+
+              <input type="number" 
+                class="form-control rounded-right w-50" 
+                min="0" 
+                [(ngModel)]="novaOferta.price"
+                #price="ngModel"
+                name="price"
+                (change)="setTwoNumberDecimal($event)" 
+                required
+                placeholder="0,00" 
+                id="price">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+            <label for="comoUsar" class="mt-2">Observações gerais:</label>
+            <textarea id="comoUsar" rows="2" class="form-control rounded"
+              #comoUsar="ngModel"
+              name="comoUsar"
+              [(ngModel)]="novaOferta.comoUsar"
+              required 
+              placeholder="Observações gerais da oferta, como dias úteis, horários, etc">
+            </textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="ondeFica" class="mt-2">Localização:</label>
+            <textarea id="ondeFica" rows="2" class="form-control rounded"
+              #ondeFica="ngModel"
+              name="ondeFica"
+              [(ngModel)]="novaOferta.ondeFica"
+              required
+              placeholder="Endereço e referências próximas">
+            </textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="mb-2 d-block">Definir como oferta destaque?</label>
+          
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" 
+              type="radio" 
+              [(ngModel)]="novaOferta.isHanked" 
+              name="inlineRadioOptions"
+              #isHanked="ngModel" 
+              id="inlineRadio1"
+              required 
+              value="true">
+            <label class="form-check-label" for="inlineRadio1">Sim</label>
+          </div>
+          
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" 
+              type="radio"
+              [(ngModel)]="novaOferta.isHanked"
+              name="inlineRadioOptions"
+              #isHanked="ngModel"
+              id="inlineRadio2" 
+              required
+              value="false">
+            <label class="form-check-label" for="inlineRadio2">Não</label>
+          </div>
+        </div>
+
+        <app-photo-editor [offer]="novaOferta">
+        </app-photo-editor>
+        
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default rounded" (click)="modalRef.hide()">Cancel
+      </button>
+
+      <input type="submit" 
+        [disabled]="!(formulario.valid && novaOferta.category !== undefined) ? 'disabled': ''" 
+        class="btn btn-danger rounded" value="Criar" form="formulario">
+
+    </div>
+  </ng-template>
+
+  <div style="overflow-x: auto;" *ngIf="ofertasProprietarias?.length">
+    <table>
+      <tr>
+        <th>Foto</th>
+        <th>Categoria</th>
+        <th>Título</th>
+        <th>Descrição</th>
+        <th>Anunciante</th>
+        <th>Hanking?</th>
+        <th>Preço</th>
+        <th>Obs.</th> 
+        <th>Localização</th>
+        <th>Ação</th>
+      </tr>
+
+      <tr *ngFor="let oferta of ofertasProprietarias">
+        <td style="max-width: 8em; margin: 1em; padding: 0.5em 0;">
+          <img *ngIf="oferta?.photos.length" width="70%" class="img-thumbnail" [src]="oferta?.photos[0]?.url">
+        </td>
+        <td>{{oferta?.category}}</td>
+        <td class="pl-3 pr-3">{{oferta?.title}}</td>
+        <td class="pl-3 pr-3">{{oferta?.description}}</td>
+        <td>{{oferta?.advertiser}}</td>
+        <td>{{oferta?.isHanked ? 'Sim' : 'Não'}}</td>
+        <td>{{oferta?.price  | currency: 'BRL'}}</td>
+        <td>{{oferta?.comoUsar}}</td>
+        <td>{{oferta?.ondeFica}}</td>
+        <td>
+          <a [routerLink]="['/oferta', oferta.id]"  class="btn btn-link btn-sm mr-2">Alterar</a>
+          <a [routerLink]="['/oferta', oferta.id]"  class="btn btn-link btn-sm">Remover</a>
+        </td>
+      </tr>
+
+    </table>
+  </div>
+</div>
