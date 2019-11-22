@@ -1,0 +1,43 @@
+.container 
+{
+    position: relative;
+    top: 5em;
+    background: #fcfcfc;
+}
+
+.container p {
+    font-weight: 500;
+    font-size: 1.1em;
+    opacity: 0.8;
+    border: 1px dotted gray;
+    background: rgba(143, 165, 206, 0.333);
+}
+
+.formulario select#uf 
+{
+    font-size: 0.9em;
+    font-weight: 400;
+    color: #585757ec;
+}
+
+.formulario input {
+    width: 90%;
+}
+
+.formulario {
+    padding: 10px;
+    padding-bottom: 5px;
+}
+
+.formulario h6 {
+    font-weight: 500;
+}
+
+.formulario select {
+    color: #585757ec;
+    width: 13%;
+    font-size: 0.9em;
+    padding: 5px 0;
+}
+
+

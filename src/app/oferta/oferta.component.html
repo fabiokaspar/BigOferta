@@ -1,43 +1,69 @@
 <div class="container">
   <div class="row text-center mb-3">
-    <h2 class="col-12 mb-2" style="color: #333;">{{oferta?.titulo}}</h2>
+    <h2 class="col-12 mb-2" style="color: #333;">{{oferta.title}}</h2>
     <h4 class="col-12" style="color: #666; font-size: 1.2em; font-weight: 400;">Aproveite essa oferta especial:
     </h4>
   </div>
 
   <div class="row">
     <div class="col-6 imagens clearfix">
-      <img class="root img-thumbnail img-fluid" [src]="oferta?.imagens[0].url">
-      <span *ngFor="let x of oferta?.imagens">
-        <img class="img-thumbnail img-fluid float-left" [src]="x.url">
+      <img class="root img-thumbnail img-fluid" [src]="oferta?.photos[0]?.url">
+      <span *ngFor="let photo of oferta?.photos">
+        <img class="img-thumbnail img-fluid float-left" [src]="photo.url">
       </span>
     </div>
 
     <div class="col-6 info w-auto mt-5">
       <p class="mb-2" style="font-weight: 400; font-size: 1.2em;">Detalhes:</p>
-      <p>Oferta: <span>{{oferta?.titulo}}</span></p>
-      <p>Anunciado por: <span>{{oferta?.anunciante}}</span></p>
-      <p>Categoria: {{oferta?.categoria}}</p>
-      <p class="mt-4 mb-2">Por apenas: <span class="text-warning">{{oferta?.valor | currency:'BRL'}}</span></p>
-      
-      <a *ngIf="!carrinhoService.itemPresenteNoCarrinho(oferta?.id)" (click)="adicionaItemCarrinho()" type="button" class="text-white font-weight-bolder btn btn-warning">Adicionar ao carrinho</a>
-      <span *ngIf="carrinhoService.itemPresenteNoCarrinho(oferta?.id)" class="text-white font-weight-bolder btn btn-success">Oferta adicionada</span>
+      <p>Oferta: <span>{{oferta?.title}}</span></p>
+      <p>Anunciado por: <span>{{oferta?.advertiser}}</span></p>
+      <p>Categoria: {{oferta?.category}}</p>
+      <p class="mt-4 mb-2">Por apenas: <span class="text-warning">{{oferta?.price | currency:'BRL'}}</span></p>
+
+      <a *ngIf="!isUserAuthenticated(); else userAuthenticatedTemplate" 
+        routerLink="/login"
+        style="cursor: pointer; font-size: 0.9em; color: blue;"
+        class="mt-3 font-weight-normal">
+        Faça login e aproveite essa big oferta especial!
+      </a>
+
+      <ng-template #userAuthenticatedTemplate>
+        <a *ngIf="!ofertaAdicionada; else ofertaAdicionadaTemplate" 
+          (click)="criaItemCarrinho()"
+          style="cursor: pointer;"
+          class="text-white font-weight-bolder btn btn-warning">
+          Adicionar oferta ao carrinho
+        </a>
+
+        <ng-template #ofertaAdicionadaTemplate>
+          <span class="text-white bg-success p-1 pl-2 pr-2 font-weight-bolder d-inline-block mt-2">
+            Oferta adicionada
+          </span>
+          <br>
+          <a style="text-decoration-line: underline; cursor: pointer; font-size: 0.9em; color: blue;"
+            (click)="removeItemCarrinho()" class="mt-5 d-inline-block font-weight-normal ml-0 pl-0">
+            Remover item do carrinho
+          </a>
+        </ng-template>
+      </ng-template>
+
     </div>
   </div>
 
-  <div class="mt-5 w-50">
+  <div class="mt-5 mb-5 w-50 border-bottom">
     <tabset>
-      <tab heading="Como usar" id="como-usar" (selectTab)="onSelect($event)">
+      <tab heading="Como usar" id="ComoUsar">
         <span class="ml-3">Dica de como usar:</span>
+        <app-como-usar [textoComoUsar]="oferta?.comoUsar"></app-como-usar>
       </tab>
-      <tab heading="Onde fica" id="onde-fica" (selectTab)="onSelect($event)">
-          <span class="ml-3">Local:</span>
+      <tab heading="Onde fica" id="OndeFica">
+        <span class="ml-3">Local:</span>
+        <app-onde-fica [textoOndeFica]="oferta?.ondeFica"></app-onde-fica>
       </tab>
     </tabset>
-    
-    <div class="p-3">
-      <router-outlet></router-outlet>
-    </div>
   </div>
 
+  <p class="text-left p-3">
+    <a routerLink='/' class="btn rounded btn-primary">Voltar</a>
+  </p>
 </div>

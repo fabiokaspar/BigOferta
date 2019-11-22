@@ -1,51 +1,79 @@
-<div class="container">
-    <div *ngIf="!carrinhoService.carrinhoEstaVazio(); else carrinhoVazio">
+<div class="container clearfix h-auto" style="margin-bottom: 10%;">
+    <div *ngIf="!carrinhoService?.carrinhoEstaVazio(); else carrinhoVazio">
         <div class="row text-center mb-3">
             <h2 class="col-12 mb-2" style="color: #333;">Lista de pedidos</h2>
+        
             <h4 class="col-12" style="color: #666; font-size: 1.2em; font-weight: 400;">
                 Confira abaixo sua lista de pedidos antes de efetuar a compra
             </h4>
         </div>
-
-        <ul class="mx-auto list-group list-group-flush mb-5">
-            <li *ngFor="let ordemCompra of listaOrdemCompra" class="d-flex justify-content-between list-group-item">
-                <img class="img-fluid img-thumbnail float-left rounded mr-3" [src]="ordemCompra.imagem"
+        
+        <ul class="d-block mx-auto list-group list-group-flush mb-3">
+            <li *ngFor="let item of ordemCompra" class="d-flex justify-content-between list-group-item">
+                <img class="img-fluid img-thumbnail float-left rounded mr-3" [src]="item?.photoUrl"
                     alt="Card image">
 
                 <div class="flex-fill">
-                    <h6 class="mt-2">{{ordemCompra.titulo}}</h6>
-                    <p class="mt-2 mb-0 pt-2 pb-0">Por: {{ordemCompra.anunciante}}</p>
-                    <p class="mt-1 mb-0 pt-0 pb-0">{{ordemCompra.descricao}}</p>
+                    <h6 class="mt-2">{{item?.title}}</h6>
+                    <p class="mt-2 mb-0 pt-2 pb-0">Por: {{item?.advertiser}}</p>
+                    <p class="mt-1 mb-0 pt-0 pb-0">{{item?.description}}</p>
                 </div>
 
                 <div class="flex-fill text-right mt-2">
-                    <span class="mr-3">Quantidade:</span>
+                    <span style="font-size: 0.8em;" class="mr-3">Alterar quantidade:</span>
                     <span class="mr-3">
-                        <a type="button" class="btn btn-sm btn-warning rounded font-weight-bolder text-white mr-1"
-                            (click)="decrementaItem(ordemCompra)">-
-                        </a>
-                        <span class="mr-1 font-weight-bolder">{{ordemCompra.quantidade}}</span>
-                        <a type="button" class="btn btn-sm btn-success rounded font-weight-bolder text-white"
-                            (click)="incrementaItem(ordemCompra)">+
-                        </a>
+                        <button
+                            class="btn btn-sm btn-outline-primary font-weight-bolder rounded mr-1 p-0 pl-1 pr-1"
+                            (click)="adicionaItem(item, 'dec')"
+                            >-
+                        </button>
+                        <span class="mr-1 font-weight-bolder">{{item?.amount}}</span>
+                        <button
+                            class="btn btn-sm btn-outline-primary font-weight-bolder rounded p-0 pl-1 pr-1"
+                            (click)="adicionaItem(item, 'inc')">+
+                        </button>
                     </span>
 
-                    <span class="mr-2">Preço:</span>
-                    <span>{{ordemCompra.valor * ordemCompra.quantidade | currency: 'BRL'}} </span>
+                    <span style="font-size: 0.8em;" class="mr-2">Preço:</span>
+                    <span style="font-size: 0.8em;">{{item?.price * item?.amount | currency: 'BRL'}} </span>
                 </div>
             </li>
         </ul>
-    </div>
 
+        <a routerLink='/' 
+               class="btn btn-sm btn-primary mt-0 float-left rounded">Voltar</a>
+
+        <div class="border-bottom d-inline-block float-right">
+            <span style="color: #444; font-weight: 500;" class="h3 float-right">{{carrinhoService.getPrecoTotal() | currency:'BRL' }}</span>
+            <span class="h3 text-primary mr-3">Total Carrinho: </span>
+        </div>
+    </div>
+    
     <ng-template #carrinhoVazio>
-        <div class="row text-center mb-3">
+        <div class="row text-center" style="margin-bottom: 20%;">
             <h2 class="col-12 mb-2" style="color: #333;">Aproveite as mega ofertas especiais que separamos pra você!</h2>
             <h4 class="col-12" style="color: #666; font-size: 1.2em; font-weight: 400;">
                 Seu carrinho de compras se encontra vazio no momento.
             </h4>
         </div>
     </ng-template>
-    
-    <span class="h3 float-right">{{carrinhoService.totalCarrinho() | currency:'BRL' }}</span>
-    <span class="h3 text-primary d-inline-block float-right mr-3">Valor Total: </span>
+
+</div>
+
+<app-formulario-ordem-compra
+    *ngIf="!carrinhoService.carrinhoEstaVazio()"
+    (purchaseEvent)="atualizaUltimaCompra($event)">
+</app-formulario-ordem-compra>
+
+
+
+<div *ngIf="lastPurchase !== undefined"
+    class="mx-auto"
+    style="width: 50%;">
+
+    <p class="text-center border-bottom" style="font-weight: 600;">Dados da sua última compra:</p>
+    <p>Cliente: {{authService.getCurrentUser().name}}</p>
+    <p>Data: {{lastPurchase?.dateOfPurchase | date:'medium'}}</p>
+    <p>Total: {{lastPurchase?.totalPrice | currency:'BRL'}}</p>
+    <p class="pb-0">COD: {{lastPurchase?.id}}</p>    
 </div>

@@ -1,10 +1,11 @@
-.container {
-    position: relative; 
-    top: 9.5em;
+* {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 400;
 }
 
-.list-group {
-    /* width: 80%; */
+.container {
+    /* position: relative; 
+    top: 10em; */
 }
 
 .list-group-item img {
@@ -37,6 +38,14 @@
     font-weight: 400;
     color: #585757ec;
     /* color: #aaa9a9ec; */
+}
+
+.inc-dec
+{
+    border-radius: 500%;
+    padding: 2px 8px;
+    font-size: 12px;
+    line-height: 12px;
 }
 
 @media(max-width: 575.98px) {

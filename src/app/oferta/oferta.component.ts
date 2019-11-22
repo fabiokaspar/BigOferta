@@ -1,73 +1,67 @@
-import { ItemCarrinho } from './../_models/item-carrinho';
-import { CarrinhoService } from './../_services/carrinho.service';
-import { Component, OnInit } from '@angular/core';
-import { OfertasService } from '../_services/ofertas.service';
-import { Oferta } from '../_models/oferta';
-import { ActivatedRoute, Router, Params } from '@angular/router';
-import { TabDirective } from 'ngx-bootstrap/tabs';
+import { AuthService } from './../_services/auth.service';
+import { ItemCarrinho } from "./../_models/item-carrinho";
+import { CarrinhoService } from "./../_services/carrinho.service";
+import { Component, OnInit } from "@angular/core";
+import { Oferta } from "../_models/oferta";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
-  selector: 'app-oferta',
-  templateUrl: './oferta.component.html',
-  styleUrls: ['./oferta.component.css'],
+  selector: "app-oferta",
+  templateUrl: "./oferta.component.html",
+  styleUrls: ["./oferta.component.css"]
 })
 export class OfertaComponent implements OnInit {
   public oferta: Oferta;
-  public headingTabSelected: string;
+  public ofertaAdicionada: boolean;
 
   constructor(
-    private ofertasService: OfertasService,
     private route: ActivatedRoute,
-    private router: Router,
-    public carrinhoService: CarrinhoService
+    private carrinhoService: CarrinhoService,
+    private authService: AuthService,
   ) { }
 
-  ngOnInit() 
-  {
-    // const id = this.route.snapshot.params['id'];
-    // console.log(id)
+  ngOnInit() {
+    this.route.data.subscribe((data: Oferta) => {
+      this.oferta = data['offer'];
+      this.ofertaAdicionada = this.carrinhoService.cartContainsOffer(this.oferta.id);
+      console.log("recebi oferta do resolver!", this.oferta);
 
-    this.route.params.subscribe(
-      (data: Params) => {
-        console.log('=> ',data)
-        const id = data.id;
-        this.ofertasService.getOfertaDetail(id)
-          .subscribe((oferta: Oferta) => {
-            this.oferta = oferta;
-            console.log('recebi oferta!', oferta)
-          });
-      },
-      error => console.log(error)
-    )
+    }, error => {
+      console.log(error)
+    });
+
   }
 
-  public adicionaItemCarrinho(): void
+  public isUserAuthenticated(): boolean
   {
-    let item: ItemCarrinho  = new ItemCarrinho(
+    return this.authService.isLoggedIn();
+  }
+
+  public criaItemCarrinho(): void {
+    const item: ItemCarrinho = new ItemCarrinho(
       this.oferta.id,
-      this.oferta.titulo,
-      this.oferta.descricao,
-      this.oferta.anunciante,
-      this.oferta.valor,
-      1,
-      this.oferta.imagens[0].url
+      this.oferta.category,
+      this.oferta.title,
+      this.oferta.description,
+      this.oferta.advertiser,
+      this.oferta.price,
+      0,
+      this.oferta.photos[0].url
     );
-    
-    this.carrinhoService.adicionaItem(item)
-    
-    console.log(this.carrinhoService.listaItens())
+
+    this.carrinhoService.adicionaItem(item, 1).subscribe();
+
+    this.ofertaAdicionada = true;
   }
 
-  public removerItemCarrinho() 
+  public removeItemCarrinho()
   {
+    let item: ItemCarrinho = this.carrinhoService.getItemCarrinhoFromCart(this.oferta.id);
 
+    if (item !== undefined)
+    {
+      this.carrinhoService.removeItem(item, 1).subscribe();
+      this.ofertaAdicionada = false;
+    }
   }
-
-  public onSelect(tab: TabDirective)
-  {
-    this.headingTabSelected = tab.id;
-    console.log(tab.id)
-    this.router.navigate(["/oferta/" + this.oferta.id + "/" + tab.id]);
-  }
-
 }

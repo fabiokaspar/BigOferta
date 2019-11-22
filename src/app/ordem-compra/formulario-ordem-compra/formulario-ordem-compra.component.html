@@ -1,0 +1,174 @@
+<div class="container clearfix w-50 border p-1" style="margin-bottom: 10%;">
+    <div *ngIf="showFormulario; else showInfoUser">
+        <p class="font-weight-bold text-dark text-center p-1 mb-0">Informe seus dados antes de
+            efetivar sua compra:</p>
+
+        <form id="form1" class="clearfix formulario" [formGroup]="formulario" (ngSubmit)="efetivarCompra()">
+            <h6 class="mb-3 pb-0 text-center pl-1 border-bottom">Endereço:</h6>
+
+            <div class="form-group mt-0 mb-0">
+                <span class="text-danger mr-1">*</span>
+                <label for="street" class="ml-1">Logradouro: </label>
+                <input type="text" id="street" formControlName="street" placeholder="ex: Rua das Flores"
+                    class="form-control w-75 rounded">
+            </div>
+
+            <div class="form-group mt-0 mb-0">
+                <span class="text-danger mr-1">*</span>
+                <label for="number" class="ml-1 mt-3">Número: </label>
+                <input type="text" id="number" formControlName="number" placeholder="Número"
+                    class="form-control w-75 rounded">
+            </div>
+
+            <span class="text-danger mr-1">*</span>
+            <label for="city" class="ml-1 mt-3">Cidade: </label>
+            <input type="text" id="city" formControlName="city" placeholder="Cidade" class="form-control rounded w-75">
+
+            <span class="text-danger mr-1">*</span>
+            <label for="district" class="ml-1 mt-3">Bairro: </label>
+            <input type="text" id="district" formControlName="district" placeholder="Bairro"
+                class="form-control rounded w-75">
+
+            <label for="phoneNumber" class="ml-1 mt-3">Tel / Cel: </label>
+            <input type="text" id="phoneNumber" formControlName="phoneNumber" placeholder="+55 11 94000-1111"
+                class="form-control rounded w-75">
+
+            <label for="idDataNasc" class="ml-1 mt-3">Data de Nascimento: </label>
+            <input type="text" id="idDataNasc" formControlName="dateOfBirth" placeholder="Clique para informar a data"
+                class="form-control rounded w-50"  bsDatepicker [bsConfig]="bsConfig">
+
+            <div class="form-group mt-4 mb-0">
+                <span class="text-danger mr-1">*</span>
+                <label for="country" class="mr-2 ml-1">País: </label>
+                <input type="text" id="country" formControlName="country" value="Brasil" placeholder="País"
+                    class="form-control rounded w-50 d-inline-block">
+
+                <span class="text-danger mr-1 ml-5">*</span>
+                <label for="state" class="mr-1 d-inline-block">Estado: </label>
+                <select id="state" formControlName="state" class="ls-select rounded">
+                    <option value="selected" selected="selected">Selecione</option>
+                    <option value="AC">AC</option>
+                    <option value="AL">AL</option>
+                    <option value="AP">AP</option>
+                    <option value="AM">AM</option>
+                    <option value="BA">BA</option>
+                    <option value="CE">CE</option>
+                    <option value="DF">DF</option>
+                    <option value="ES">ES</option>
+                    <option value="GO">GO</option>
+                    <option value="MA">MA</option>
+                    <option value="MT">MT</option>
+                    <option value="MS">MS</option>
+                    <option value="MG">MG</option>
+                    <option value="PA">PA</option>
+                    <option value="PB">PB</option>
+                    <option value="PR">PR</option>
+                    <option value="PE">PE</option>
+                    <option value="PI">PI</option>
+                    <option value="RJ">RJ</option>
+                    <option value="RN">RN</option>
+                    <option value="RS">RS</option>
+                    <option value="RO">RO</option>
+                    <option value="RR">RR</option>
+                    <option value="SC">SC</option>
+                    <option value="SP">SP</option>
+                    <option value="SE">SE</option>
+                    <option value="TO">TO</option>
+                </select>
+            </div>
+            <h6 class="mb-3 mt-4 pb-1 text-center pl-1 border-bottom">Dados de Pagamento:</h6>
+
+            <div class="form-group mt-4 mb-0">
+                <label for="card" class="ml-0 mt-3">
+                    <span class="text-danger mr-1">*</span>
+                    Cartão de Crédito <span style="font-size: 0.7em;">(sem espaços, pontos ou hífens):</span>
+                </label>
+                <input type="password" id="card" formControlName="card" placeholder="Número do cartão (16 dígitos)"
+                    maxlength="16" class="form-control d-inline-block rounded w-50 ml-2">
+
+                <label for="cvv" class="ml-0 mt-3">
+                    <span class="text-danger mr-1">*</span>
+                    Código de Segurança <span style="font-size: 0.7em;">(CVV)</span>:
+                </label>
+                <input type="password" id="cvv" formControlName="cvv" placeholder="3 dig." maxlength="3"
+                    class="form-control d-inline-block rounded ml-2" 
+                    style="width: 9%;">
+
+            </div>
+
+
+            <input class="btn btn-sm btn-outline-primary float-right rounded font-weight-bolder w-25 mr-3 mt-0" 
+                type="submit"
+                value="Efetivar Compra">
+
+            <button *ngIf="authService.getCurrentUser().street !== null" 
+                (click)="showFormulario=false"
+                class="btn btn-sm btn-outline-secondary rounded float-right mr-2 mt-0">
+                Cancelar
+            </button>
+
+            <div class="float-left text-secondary" style="font-size: 0.7em; margin-top: 3%">
+                <span>(<span class="text-danger">*</span>) campo obrigatório</span>
+            </div>
+        </form>
+
+
+    </div>
+
+    <ng-template #showInfoUser>
+        <div class="text-center font-weight-bolder border-bottom mb-2">Confira seus dados abaixo antes de efetuar a compra:</div>
+        <div style="background-color: #fff; border: 1px dotted gray; text-indent: 2%;">
+            <span class="d-block border-bottom p-1">Nome:
+                {{user?.name}}
+            </span>
+
+            <span class="d-block border-bottom p-1">Data Nascimento:
+                {{user?.dateOfBirth | date:'shortDate'}}
+            </span>
+
+            <span class="d-block border-bottom p-1">
+                Logradouro: {{user?.street}}
+            </span>
+
+            <span class="d-block border-bottom p-1">
+                Número: {{user?.number}}
+            </span>
+
+            <span class="d-block border-bottom p-1">
+                Bairro: {{user?.district}}
+            </span>
+
+            <span class="d-block border-bottom p-1">
+                Cidade: {{user?.city}}
+            </span>
+
+            <span class="d-block border-bottom p-1">
+                Estado: {{user?.state}}
+            </span>
+
+            <span class="d-block border-bottom p-1">
+                País: {{user?.country}}
+            </span>
+
+            <span class="d-block border-bottom p-1">
+                Número do cartão: <span class="ml-2">************</span> {{ user?.cardNumber.substr(12, 4)}}
+            </span>
+
+            <span class="d-block p-1">
+                Tel/Cel: {{user?.phoneNumber}}
+            </span>
+        </div>
+
+        <button 
+            (click)="efetivarCompra()"
+            class="btn btn-sm btn-outline-primary font-weight-bolder float-right w-25 rounded mr-2 mb-2 mt-3">
+            Efetivar Compra
+        </button>
+
+        <button (click)="showFormulario=true"
+            class="btn btn-sm btn-outline-secondary rounded float-right mr-2 mb-2 mt-3">
+            Editar
+        </button>
+    </ng-template>
+
+</div>
