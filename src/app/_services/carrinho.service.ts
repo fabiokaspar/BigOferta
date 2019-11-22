@@ -1,71 +1,187 @@
+import { AuthService } from 'src/app/_services/auth.service';
+import { environment } from './../../environments/environment';
+import { HttpClient } from '@angular/common/http';
 import { ItemCarrinho } from './../_models/item-carrinho';
 import { Injectable } from '@angular/core';
+import { map, catchError, switchMap } from 'rxjs/operators';
+import { throwError, Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CarrinhoService {
-  private carrinho: Array<ItemCarrinho> = [];
-  private total: number = 0;
+  // private carrinho: ItemCarrinho[];
+  private totalPrice = 0;
 
-  constructor() { }
-  
-  public adicionaItem(itemNovo: ItemCarrinho): void
+  public subjectCart: BehaviorSubject<ItemCarrinho[]> =
+    new BehaviorSubject<ItemCarrinho[]>([]);
+
+  constructor(
+    private httpClient: HttpClient,
+    private authService: AuthService
+  ) {}
+
+  public loadCartFromStorage()
   {
-    let indexItem = this.carrinho.findIndex((item: ItemCarrinho) => item.id === itemNovo.id);
-
-    if (indexItem !== -1)
+    if (this.authService.isLoggedIn())
     {
-      this.carrinho[indexItem].quantidade += 1;
-    }
-    else
-    {
-      this.carrinho.push(itemNovo);
-    }
+      const id = this.authService.getDecodedToken().nameid;
+      this.httpClient
+        .get<ItemCarrinho[]>(`${environment.URI_API}/users/${id}/cart`)
+        .pipe(
+          map((cart: ItemCarrinho[]) => {
+            return cart;
+          }),
+        ).subscribe((cart: ItemCarrinho[]) => {
+          // this.carrinho = cart;
+          this.totalPrice = 0;
 
-    this.total += itemNovo.valor;
+          cart.forEach((item: ItemCarrinho) => {
+            this.totalPrice += item.price * item.amount;
+          });
+
+          this.subjectCart.next(cart);
+        });
+    }
   }
 
-  public removeItem(itemRemovido: ItemCarrinho): void
+  public adicionaItem(item: ItemCarrinho, amount: number)
   {
-    let index = 0;
+    const id: number = this.authService.getDecodedToken().nameid;
 
-    this.carrinho.forEach((item: ItemCarrinho) => {
-      if (itemRemovido.id === item.id)
-      {
-        item.quantidade -= 1;
-        this.total -= item.valor;
+    const url = `${environment.URI_API}/users/${id}/addtocart`;
+    const finalAmount = item.amount + amount;
 
-        if (item.quantidade === 0)
+    const body = {
+      amount: finalAmount,
+      userId: id,
+      offerId: item.offerId
+    };
+
+    // debugger;
+
+    return this.submitRequestItemCarrinho(url, body).pipe(
+      map(response => {
+        console.log(response);
+        this.totalPrice += item.price * amount;
+
+        return response;
+      })
+    );
+  }
+
+  public removeItem(item: ItemCarrinho, amount: number)
+  {
+    const id = this.authService.getDecodedToken().nameid;
+
+    const url = `${environment.URI_API}/users/${id}/removefromcart`;
+    // amount = (amount > item.amount) ? item.amount : amount;
+
+    const finalAmount = item.amount - ((amount > item.amount) ? item.amount : amount);
+
+    const body = {
+      amount: finalAmount,
+      userId: id,
+      offerId: item.offerId
+    };
+
+    return this.submitRequestItemCarrinho(url, body).pipe(
+      map(response => {
+        console.log(response);
+        this.totalPrice -= item.price * amount;
+
+        return response;
+      })
+    );
+  }
+
+  private submitRequestItemCarrinho(url: string, body: any)
+  {
+    return this.httpClient.post(url, body).pipe(
+      map((response: any) => {
+        console.log(response);
+        if (response.status === undefined)
         {
-          this.carrinho.splice(index, 1);
+          this.subjectCart.next(response);
         }
 
-        return;
-      }
+        return response;
+      }),
+      catchError(error => {
+        console.log(error);
+        return throwError(error)
+      })
+    );
+  }
 
-      index += 1;
+  public getLastPurchaseOrder(): Observable<any>
+  {
+    const userId = this.authService.getDecodedToken().nameid;
+
+    const URL = `${environment.URI_API}/users/${userId}/lastPurchase`;
+
+    return this.httpClient.get(URL).pipe(
+      map(purchase => purchase),
+      catchError(error => throwError(error))
+    );
+  }
+
+  public carrinhoEstaVazio()
+  {
+    let isEmpty: boolean = false;
+
+    this.subjectCart.subscribe(cart => {
+      isEmpty = cart.length === 0;
     });
-    
+
+    return isEmpty;
   }
 
-  public totalCarrinho(): number
+  public getPrecoTotal()
   {
-    return this.total;
+    return this.totalPrice;
   }
 
-  public listaItens(): Array<ItemCarrinho>
+  public esvaziaCarrinho(): void
   {
-    return this.carrinho;
+    this.totalPrice = 0;
+    this.subjectCart.next([]);
   }
 
-  public carrinhoEstaVazio(): boolean
+  public cartContainsOffer(offerId): boolean
   {
-    return (this.carrinho.length === 0);
+    let itemProcurado: ItemCarrinho;
+
+    this.subjectCart.subscribe(cart => {
+      itemProcurado = cart.find(item => item.offerId === offerId);
+    });
+
+    return itemProcurado !== undefined;
   }
 
-  public itemPresenteNoCarrinho(id: number): boolean
+  public getItemCarrinhoFromCart(itemId): ItemCarrinho
   {
-    return this.carrinho.some((item: ItemCarrinho) => item.id === id);
+    let itemProcurado: ItemCarrinho;
+
+    this.subjectCart.subscribe(cart => {
+      itemProcurado = cart.find(item => item.offerId === itemId);
+    });
+
+    return itemProcurado;
   }
+
+  public confirmaOrdemCompra(userId): Observable<any>
+  {
+    // let data: any;
+
+    const URL = `${environment.URI_API}/users/${userId}/confirmPurchase`;
+    // this.subjectCart.subscribe(response => {
+    //   data = response;
+    // });
+
+    return this.httpClient.get(URL);
+  }
+
 }
+
+
