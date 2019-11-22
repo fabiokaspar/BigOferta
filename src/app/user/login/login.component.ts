@@ -1,3 +1,4 @@
+import { CarrinhoService } from './../../_services/carrinho.service';
 import { AuthService } from 'src/app/_services/auth.service';
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
@@ -17,6 +18,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
+    private carrinhoService: CarrinhoService,
     private route: Router
   ) { }
 
@@ -44,6 +46,9 @@ export class LoginComponent implements OnInit {
       this.authService.login(this.user).subscribe(
         data => {
           console.log(data)
+
+          this.carrinhoService.loadCartFromStorage();
+
           this.route.navigateByUrl('/');
           console.log(this.authService.getTokenExpirationDate())
           console.log(this.authService.isLoggedIn())

@@ -3,6 +3,10 @@
 @import "../node_modules/bootswatch/dist/cosmo/bootstrap.min.css";
 @import "../node_modules/ngx-bootstrap/datepicker/bs-datepicker.css";
 
+html, body {
+    height: 100%;
+}
+
 input.ng-touched.ng-invalid {
     border: 1px solid red;
 }
@@ -16,3 +20,10 @@ input.ng-touched.ng-valid {
     font-size: 0.8em;
     margin: 1% 2%;
 }
+
+.container {
+    min-height: 25%;
+    position: relative;
+    top: 10em;
+}
+
