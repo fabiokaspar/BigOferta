@@ -1,11 +1,12 @@
 export class ItemCarrinho {
     constructor(
-        public id?: number,
-        public titulo?: string,
-        public descricao?: string,
-        public anunciante?: string,
-        public valor?: number,
-        public quantidade?: number,
-        public imagem?: string
+        public offerId?: number,
+        public category?: string,
+        public title?: string,
+        public description?: string,
+        public advertiser?: string,
+        public price?: number,
+        public amount?: number,
+        public photoUrl?: string
     ) { }
 }
