@@ -18,7 +18,7 @@ export class DiversaoComponent implements OnInit {
   }
 
   private getOfertas(): void {
-    this.ofertasService.getOfertasDiversao()
+    this.ofertasService.getOfertasByCategory('diversão')
       .subscribe((ofertas: Oferta[]) => {
         this.ofertas = ofertas;
       });

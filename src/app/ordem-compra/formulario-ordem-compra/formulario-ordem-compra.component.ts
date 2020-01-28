@@ -1,10 +1,10 @@
+import { AlertifyService } from './../../_services/alertify.service';
 import { AuthService } from 'src/app/_services/auth.service';
 import { CarrinhoService } from './../../_services/carrinho.service';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { User } from 'src/app/_models/user';
-import { BsDatepickerConfig } from 'ngx-bootstrap';
+import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 
 @Component({
   selector: 'app-formulario-ordem-compra',
@@ -17,13 +17,18 @@ export class FormularioOrdemCompraComponent implements OnInit {
   showFormulario;
   user: User;
 
+
   @Output() public purchaseEvent = new EventEmitter<any>();
 
   constructor(
     private fb: FormBuilder,
     private carrinhoService: CarrinhoService,
-    public authService: AuthService
-  ) {}
+    public authService: AuthService,
+    public alertifyService: AlertifyService,
+    private bsLocaleService: BsLocaleService
+  ) {
+    this.bsLocaleService.use('pt-br')
+  }
 
   ngOnInit() {
     this.bsConfig = {
@@ -35,21 +40,28 @@ export class FormularioOrdemCompraComponent implements OnInit {
     this.createForm();
   }
 
+  scrollUp()
+  {
+    // const currentUrl = window.location.href;
+    // window.location.href = currentUrl;
+    window.scrollTo(0, 0)
+  }
+
   private createForm()
   {
-    this.user = this.authService.getCurrentUser();
+    this.user = JSON.parse(localStorage.getItem('user'));
 
     this.formulario = this.fb.group({
       street: [null || this.user.street, Validators.required],
-      number: [null || this.user.number, Validators.required],
+      number: [null || this.user.number, [Validators.required, Validators.maxLength(5)]],
       city: [null || this.user.city, Validators.required],
       district: [null || this.user.district, Validators.required],
       state: [null || this.user.state, Validators.required],
-      phoneNumber: [null || this.user.phoneNumber],
+      phoneNumber: [null || this.user.phoneNumber, [Validators.minLength(8), Validators.maxLength(20)]],
       dateOfBirth: [null],
       country: [null || this.user.country, Validators.required],
-      card: [null, Validators.required],
-      cvv: [null, Validators.required]
+      card: [null, [Validators.required, Validators.pattern('^[0-9]{16}$')]],
+      cvv: [null, [Validators.required, Validators.pattern('^[0-9]{3}$')]]
     });
 
     if (this.user.street !== null)
@@ -64,6 +76,15 @@ export class FormularioOrdemCompraComponent implements OnInit {
 
   efetivarCompra()
   {
+    this.alertifyService.confirm(
+      'Clique em Ok para finalizar a compra ou em Cancel para sair',
+      () => { this.sendRequestToFinalizePurchaseOrder(); },
+      () => { }
+    );
+  }
+
+  private sendRequestToFinalizePurchaseOrder()
+  {
     if (this.updateUserFromForm())
     {
       const userId = this.authService.getDecodedToken().nameid;
@@ -76,7 +97,11 @@ export class FormularioOrdemCompraComponent implements OnInit {
           {
             this.carrinhoService.esvaziaCarrinho();
             this.purchaseEvent.emit(response.purchase);
-            alert("COMPRA FINALIZADA! AGRADECEMOS A PREFERÊNCIA! TEMOS PRAZER EM SERVÍ-LO!!")
+            this.alertifyService.confirm(
+              'Compra efetivada! Temos prazer em serví-lo, volte sempre!',
+              () => {},
+              () => {}
+            )
           }
         },
         error =>
@@ -98,7 +123,8 @@ export class FormularioOrdemCompraComponent implements OnInit {
     if (this.formulario.valid)
     {
       const userForUpdate: User = {
-        userName: this.authService.getCurrentUser().userName,
+        name: this.user.name,
+        userName: this.user.userName,
         street: this.formulario.get('street').value,
         country: this.formulario.get('country').value,
         city: this.formulario.get('city').value,

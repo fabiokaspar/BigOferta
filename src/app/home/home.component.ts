@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
     this.ofertasService.getOfertasDestaque()
       .subscribe((ofertas: Oferta[]) => {
         this.ofertas = ofertas;
-        // console.log(this.ofertas);
+        console.log(this.ofertas);
       });
   }
 

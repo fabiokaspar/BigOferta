@@ -1,11 +1,11 @@
+import { ModalOfertaComponent } from './../../oferta/modal-oferta/modal-oferta.component';
 import { AuthService } from './../../_services/auth.service';
 import { OfertasService } from './../../_services/ofertas.service';
-import { Component, OnInit, TemplateRef } from '@angular/core';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { Component, OnInit } from '@angular/core';
+import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap';
 import { Oferta } from 'src/app/_models/oferta';
-import { NgForm } from '@angular/forms';
-import { Observable } from 'rxjs';
 import { User } from 'src/app/_models/user';
+import { ModalAlteraOfertaComponent } from 'src/app/oferta/modal-altera-oferta/modal-altera-oferta.component';
 // import { Photo } from 'src/app/_models/photo';
 
 @Component({
@@ -14,9 +14,9 @@ import { User } from 'src/app/_models/user';
   styleUrls: ['./painel-ofertas.component.css']
 })
 export class PainelOfertasComponent implements OnInit {
-  modalRef: BsModalRef;
-  novaOferta: Oferta;
   ofertasProprietarias: Oferta[];
+  user: User;
+  bsModalRef: BsModalRef;
 
   constructor(
     private modalService: BsModalService,
@@ -26,11 +26,11 @@ export class PainelOfertasComponent implements OnInit {
 
   ngOnInit()
   {
-    const user: User = this.authService.getCurrentUser();
+    this.user = JSON.parse(localStorage.getItem('user'));;
 
     const userParams = {
-      // advertiser: user.userName
-      advertiser: 'FEK',
+      advertiser: this.user.userName,
+      // advertiser: 'FEK',
       isAdvertiser: true
     };
 
@@ -39,53 +39,46 @@ export class PainelOfertasComponent implements OnInit {
         this.ofertasProprietarias = data;
       }
     );
-
   }
 
-  openModal(template: TemplateRef<any>)
+  openModalNovaOferta()
   {
-    this.novaOferta = new Oferta();
-    this.novaOferta.photos = [];
-    this.modalRef = this.modalService.show(template)
+    const config: ModalOptions = {
+      backdrop: 'static',
+      keyboard: false,
+      ignoreBackdropClick: true
+    };
+
+    this.bsModalRef = this.modalService.show(ModalOfertaComponent, config)
   }
 
-  cadastrarOferta(formulario: NgForm)
+  openModalAlteraOferta(offer)
   {
-    this.modalRef.hide();
+    const config: ModalOptions = {
+      backdrop: 'static',
+      keyboard: false,
+      ignoreBackdropClick: true,
+      initialState: {
+        oferta: offer
+      }
+    };
+
+    this.bsModalRef = this.modalService.show(ModalAlteraOfertaComponent, config)
+  }
+
+  removerOferta(offerId)
+  {
     const userId = JSON.parse(localStorage.getItem('user')).id;
 
-    let observable: Observable<any>;
-
-    // debugger;
-    if (this.novaOferta.photos.length === 0)
-    {
-      observable = this.ofertasService.salvaOferta(userId, this.novaOferta);
-    }
-    else
-    {
-      observable = this.ofertasService.updateOferta(userId, this.novaOferta);
-    }
-
-    observable.subscribe(data => {
-      console.log(data);
-      this.novaOferta = data;
+    this.ofertasService.removeOferta(userId, offerId).subscribe(data => {
+      console.log(data)
+      // alert('Oferta removida com suceso!')
       const currentUrl = window.location.href;
       window.location.href = currentUrl;
-    });
-
-  }
-
-  setCategory(event: string)
-  {
-    this.novaOferta.category = event;
-    console.log(this.novaOferta)
-  }
-
-  setTwoNumberDecimal($event)
-  {
-    const num: number = parseFloat($event.target.value);
-
-    $event.target.value = (num < 0 ? 0 : num).toFixed(2);
+    }, error => {
+      alert('erro ao remover oferta')
+      console.log(error)
+    })
   }
 
 }

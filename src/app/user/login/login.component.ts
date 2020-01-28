@@ -1,3 +1,4 @@
+import { AlertifyService } from './../../_services/alertify.service';
 import { CarrinhoService } from './../../_services/carrinho.service';
 import { AuthService } from 'src/app/_services/auth.service';
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
@@ -19,7 +20,8 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private carrinhoService: CarrinhoService,
-    private route: Router
+    private route: Router,
+    private alertifyService: AlertifyService,
   ) { }
 
   ngOnInit() {
@@ -42,28 +44,27 @@ export class LoginComponent implements OnInit {
     {
       this.user = this.formulario.value;
 
-      console.log(this.user)
       this.authService.login(this.user).subscribe(
         data => {
           console.log(data)
 
           this.carrinhoService.loadCartFromStorage();
-
+          this.user = data.user;
           this.route.navigateByUrl('/');
-          console.log(this.authService.getTokenExpirationDate())
-          console.log(this.authService.isLoggedIn())
-          // this.error = 0;
+
+          this.alertifyService.success(`Seja bem-vindo ${this.user.userName}!`)
         },
         error => {
           console.log(error)
           this.error = error.status;
+          this.alertifyService.error('Erro de autenticação')
         }
       );
     }
     else
     {
-      this.formulario.get('username').markAsTouched()
-      this.formulario.get('password').markAsTouched()
+      this.formulario.get('username').markAsTouched();
+      this.formulario.get('password').markAsTouched();
     }
   }
 

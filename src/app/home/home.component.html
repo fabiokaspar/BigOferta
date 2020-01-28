@@ -7,14 +7,14 @@
         </h4>
     </div>
 
-    <div class="card-columns">
-        <div class="card p-1"
+    <div class="card-columns row mx-auto">
+        <div class="card p-1 ml-1 mr-0 col-2"
+            style="width: 100%; min-height: 70%; max-height: 90%;"
             *ngFor="let oferta of ofertas">
             <img class="card-img-top" [src]="oferta?.photos[0]?.url" alt="Card image" >
             <div class="card-body h-50 p-0 text-center">
-                <h4 class="card-title">{{oferta?.title}}</h4>
-                <p class="card-text text-left ml-2 mb-2">{{oferta?.description}}</p>
-
+                <h4 class="card-title">{{oferta?.title | descricaoReduzida:0:20}}</h4>
+                <p class="card-text text-left ml-2 mb-2">{{oferta?.description | descricaoReduzida:0:50 }}</p>
                 <p class="text-warning preco d-inline-block mr-1">{{oferta?.price | currency:'BRL'}}</p>
                 <a [routerLink]="['/oferta', oferta?.id]" routerLinkActive="router-link-active"  class="btn btn-sm btn-outline-primary rounded float-right">Ver oferta</a>
             </div>

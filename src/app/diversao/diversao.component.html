@@ -7,11 +7,11 @@
   </div>
 
   <ul class="list-group list-group-flush w-75">
-    <li class="list-group-item h-auto pb-2 pt-2" *ngFor="let oferta of ofertas">
-        <img class="img-fluid img-thumbnail float-left rounded mr-5 mb-3 h-auto" style="" [src]="oferta?.photos[0]?.url" alt="Card image">
+    <li class="list-group-item h-25 pb-2 pt-2" *ngFor="let oferta of ofertas">
+        <img class="img-fluid img-thumbnail float-left rounded mr-5 mb-3 h-auto"  [src]="oferta?.photos[0]?.url" alt="Card image">
         <div class="descricao">
           <h4>{{oferta?.title}}</h4>
-          <h6>{{oferta?.description}}</h6>
+          <h6>{{oferta?.description | descricaoReduzida:0:50}}</h6>
           <p>Anunciado por: <b>{{oferta?.advertiser}}</b></p>
           <p style="margin-top: -1%;" class="text-warning preco float-left d-inline-block">{{oferta?.price | currency:'BRL'}}</p>
           <a [routerLink]="['/oferta', oferta?.id]" class="btn btn-sm d-block btn-outline-primary rounded">Ver oferta</a>

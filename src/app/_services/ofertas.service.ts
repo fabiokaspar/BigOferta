@@ -17,23 +17,31 @@ export class OfertasService {
 
   public getOfertasDestaque(): Observable<Oferta[]>
   {
-    let path: string = `${environment.URI_API}/ofertas`;
+    let path = `${environment.URI_API}/ofertas/filter`;
+    let params = new HttpParams();
+    params = params.append('isHanked', 'true');
 
     if (this.authService.isLoggedIn())
     {
       path += `/user/${this.authService.getDecodedToken().nameid}`;
     }
-    return this.http.get<Oferta[]>(path);
+    
+    return this.http.get<Oferta[]>(path, { params });
   }
 
-  public getOfertasRestaurante(): Observable<Oferta[]>
+  public getOfertasByCategory(category: string): Observable<Oferta[]>
   {
-    return this.http.get<Oferta[]>(`${environment.URI_API}/ofertas?category=restaurantes`);
-  }
+    let path = `${environment.URI_API}/ofertas/filter`;
+    let params = new HttpParams();
+    params = params.append('category', category);
+    // params = params.append('advertiser', '');
 
-  public getOfertasDiversao(): Observable<Oferta[]>
-  {
-    return this.http.get<Oferta[]>(`${environment.URI_API}/ofertas?category=diversao`);
+    if (this.authService.isLoggedIn())
+    {
+      path += `/user/${this.authService.getDecodedToken().nameid}`;
+    }
+
+    return this.http.get<Oferta[]>(path, { params });
   }
 
   public getOfertaDetail(id): Observable<Oferta> {
@@ -42,7 +50,10 @@ export class OfertasService {
 
   public pesquisaPorOfertas(query: string): Observable<Oferta[]>
   {
-    return this.http.post<Oferta[]>(`${environment.URI_API}/ofertas/like`, query).pipe(
+    let params = new HttpParams();
+    params = params.append('queryFilter', query);
+
+    return this.http.get<Oferta[]>(`${environment.URI_API}/ofertas/like`, { params }).pipe(
       retry(10)
     );
   }
@@ -56,7 +67,7 @@ export class OfertasService {
       // tslint:disable-next-line: forin
       for (const key in offerParams)
       {
-        console.log(key + " => "+ offerParams[key]);
+        // console.log(key + " => "+ offerParams[key]);
         params = params.append(key, offerParams[key]);
       }
       console.log(params)
@@ -81,8 +92,23 @@ export class OfertasService {
 
   public updateOferta(userId, oferta): Observable<any>
   {
-    return this.http.post(`${environment.URI_API}/ofertas/update?userId=${userId}`, oferta);
+    let params = new HttpParams();
+    params = params.append('userId', `${userId}`)
+
+    return this.http.put(`${environment.URI_API}/ofertas/update`, oferta, {params});
   }
 
-  
+  public removeOferta(userId, offerId): Observable<any>
+  {
+    let params = new HttpParams();
+    params = params.append('userId', `${userId}`)
+
+    return this.http.delete(`${environment.URI_API}/ofertas/${offerId}`, {params});
+  }
+
+  public removeFoto(userId, photoId): Observable<any>
+  {
+    return this.http.delete(`${environment.URI_API}/users/${userId}/photos/${photoId}`);
+  }
+
 }

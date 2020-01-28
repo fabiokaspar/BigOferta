@@ -23,7 +23,6 @@ export class OrdemCompraComponent implements OnInit, OnDestroy {
 
   ngOnInit()
   {
-    console.log(this.authService.getCurrentUser())
     this.createSubjectForUpdatingCart();
 
     this.carrinhoService.subjectCart.subscribe(cart => {
@@ -38,7 +37,6 @@ export class OrdemCompraComponent implements OnInit, OnDestroy {
     )
 
     console.log(this.ordemCompra)
-    
   }
 
   ngOnDestroy()

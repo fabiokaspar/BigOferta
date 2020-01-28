@@ -1,28 +1,35 @@
 
 .list-group-item h4 {
-    font-size: 1.3em;
+    font-size: 1.2em;
     font-weight: 400;
 }
 
 .list-group-item h6 {
-    font-size: 1.1em;
+    font-size: 1.0em;
     color: #aaa9a9ec;
     font-weight: 600;
 }
 
 .list-group-item .preco {
-    font-size: 1.1em;
-}
-
-.list-group-item p {
     font-size: 1.0em;
 }
 
+.list-group-item p {
+    font-size: 0.9em;
+}
+
 .list-group-item img {
-    width: 25%;
+    width: 16%;
     -ms-transform: scaleY(1.3); /* IE 9 */
     -webkit-transform: scaleY(1.3); /* Safari 3-8 */
     transform: scaleY(1.3);
     display: inline-block;
     margin-top: 1em;
+}
+
+.descricao a {
+    width: 10%;
+    float: right;
+    margin-right: 1%;
+    margin-top: -2%;
 }

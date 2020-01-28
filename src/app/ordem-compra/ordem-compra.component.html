@@ -16,7 +16,7 @@
                 <div class="flex-fill">
                     <h6 class="mt-2">{{item?.title}}</h6>
                     <p class="mt-2 mb-0 pt-2 pb-0">Por: {{item?.advertiser}}</p>
-                    <p class="mt-1 mb-0 pt-0 pb-0">{{item?.description}}</p>
+                    <p class="mt-1 mb-0 pt-0 pb-0">{{item?.description | descricaoReduzida:0:100}}</p>
                 </div>
 
                 <div class="flex-fill text-right mt-2">
@@ -40,8 +40,8 @@
             </li>
         </ul>
 
-        <a routerLink='/' 
-               class="btn btn-sm btn-primary mt-0 float-left rounded">Voltar</a>
+        <a href="javascript:history.back()"
+            class="btn btn-link mt-0 float-left rounded">Voltar</a>
 
         <div class="border-bottom d-inline-block float-right">
             <span style="color: #444; font-weight: 500;" class="h3 float-right">{{carrinhoService.getPrecoTotal() | currency:'BRL' }}</span>
@@ -54,8 +54,11 @@
             <h2 class="col-12 mb-2" style="color: #333;">Aproveite as mega ofertas especiais que separamos pra você!</h2>
             <h4 class="col-12" style="color: #666; font-size: 1.2em; font-weight: 400;">
                 Seu carrinho de compras se encontra vazio no momento.
+                <a href="javascript:history.back()"
+                    class="btn btn-link ml-3 mt-0 rounded">Voltar</a>
             </h4>
         </div>
+        
     </ng-template>
 
 </div>
@@ -67,12 +70,12 @@
 
 
 
-<div *ngIf="lastPurchase !== undefined"
+<div *ngIf="lastPurchase !== undefined && lastPurchase !== null"
     class="mx-auto"
     style="width: 50%;">
 
     <p class="text-center border-bottom" style="font-weight: 600;">Dados da sua última compra:</p>
-    <p>Cliente: {{authService.getCurrentUser().name}}</p>
+    <p>Cliente: {{authService?.getUser().name}}</p>
     <p>Data: {{lastPurchase?.dateOfPurchase | date:'medium'}}</p>
     <p>Total: {{lastPurchase?.totalPrice | currency:'BRL'}}</p>
     <p class="pb-0">COD: {{lastPurchase?.id}}</p>    

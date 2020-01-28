@@ -6,7 +6,7 @@
 }
 
 .container p {
-    font-weight: 500;
+    font-weight: bolder;
     font-size: 1.1em;
     opacity: 0.8;
     border: 1px dotted gray;
@@ -38,6 +38,14 @@
     width: 13%;
     font-size: 0.9em;
     padding: 5px 0;
+}
+
+select:invalid {
+    color: #666;
+}
+
+option[value=""][disabled] {
+    display: none;
 }
 
 

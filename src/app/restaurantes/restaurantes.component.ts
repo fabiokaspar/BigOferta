@@ -19,7 +19,7 @@ export class RestaurantesComponent implements OnInit {
   }
 
   private getOfertas(): void {
-    this.ofertasService.getOfertasRestaurante()
+    this.ofertasService.getOfertasByCategory('restaurantes')
       .subscribe((ofertas: Oferta[]) => {
         this.ofertas = ofertas;
       });

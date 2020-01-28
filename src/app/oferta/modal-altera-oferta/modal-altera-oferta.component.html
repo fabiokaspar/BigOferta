@@ -1,0 +1,137 @@
+<div class="modal w-50" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog-scrollable">
+          <div class="modal-content">
+      
+            <div class="modal-header">
+              <h4 class="modal-title pull-left">Editar oferta</h4>
+              <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form #formulario="ngForm" id="formulario" (ngSubmit)="alterarOferta()">
+      
+                <div class="form-group">
+                  <label for="category" class="d-block mb-2">Selecione uma categoria:</label>
+                  <select id="category" 
+                  name="category"
+                  [(ngModel)]="oferta.category" 
+                  #category="ngModel" 
+                  required 
+                  class="ls-select rounded">
+      
+                    <option value=""  disabled selected hidden>Categoria</option>
+                    <option value="restaurantes">Restaurantes</option>
+                    <option value="diversão">Diversão</option>
+                    <option value="hotelaria">Hotelaria</option>
+                    <option value="viagens">Viagens</option>
+                    <option value="baladas">Baladas</option>
+                    <option value="mercadorias">Mercadorias</option>
+                  </select>
+                </div>
+      
+                <div class="form-group">
+                  <label for="title" class="mt-2">Título:</label>
+                  <input  type="text" class="form-control rounded w-50" id="title" placeholder="Informe o título da oferta"
+                    required #title="ngModel" name="title" [(ngModel)]="oferta.title">
+                </div>
+      
+                <div class="form-group">
+                  <label for="description" class="mt-2">Descrição:</label>
+                  <textarea id="description" rows="3" class="form-control rounded" placeholder="Digite a descrição da oferta"
+                    id="description" required #description="ngModel" name="description"
+                    [(ngModel)]="oferta.description"></textarea>
+                </div>
+      
+                <div class="form-group">
+                  <label for="advertiser" class="mt-2">Anunciante:</label>
+                  <input id="advertiser" type="text" [value]="oferta.advertiser" readonly class="form-control rounded w-75"
+                    placeholder="Informe o título da oferta">
+                </div>
+      
+                <div class="form-group">
+      
+                  <label for="price" class="mt-2">Preço da oferta:</label>
+      
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text rounded-left" style="font-size: 1em;">
+                        R$
+                      </div>
+      
+                      <input type="number" class="form-control rounded-right w-50" min="0" [(ngModel)]="oferta.price"
+                        #price="ngModel" name="price" (change)="setTwoNumberDecimal($event)" required placeholder="0,00"
+                        id="price">
+                    </div>
+                  </div>
+                </div>
+      
+                <div class="form-group">
+                  <label for="comoUsar" class="mt-2">Observações gerais:</label>
+                  <textarea id="comoUsar" rows="2" class="form-control rounded" #comoUsar="ngModel" name="comoUsar"
+                    [(ngModel)]="oferta.comoUsar" required
+                    placeholder="Observações gerais da oferta, como dias úteis, horários, etc">
+                  </textarea>
+                </div>
+      
+                <div class="form-group">
+                  <label for="ondeFica" class="mt-2">Localização:</label>
+                  <textarea id="ondeFica" rows="2" class="form-control rounded" #ondeFica="ngModel" name="ondeFica"
+                    [(ngModel)]="oferta.ondeFica" required placeholder="Endereço e referências próximas">
+                  </textarea>
+                </div>
+      
+                <div class="form-group">
+                  <label class="mb-2 d-block">Definir como oferta destaque?</label>
+      
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" [(ngModel)]="oferta.isHanked" name="inlineRadioOptions"
+                      #isHanked="ngModel" id="inlineRadio1" required value="true">
+                    <label class="form-check-label" for="inlineRadio1">Sim</label>
+                  </div>
+      
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" [(ngModel)]="oferta.isHanked" name="inlineRadioOptions"
+                      #isHanked="ngModel" id="inlineRadio2" required value="false">
+                    <label class="form-check-label" for="inlineRadio2">Não</label>
+                  </div>
+                </div>
+                
+                <section>
+                  <h4 class="mb-3 text-center">Editar fotos</h4>
+                  <app-photo-editor [offer]="oferta"
+                    [url]="urlPhotoEditor"
+                    [isUpdating]="true">
+                  </app-photo-editor>
+
+                  <div class="mt-2">
+                    <p class="mb-1 mr-1 p-1 d-inline-block"
+                      style="width: 15%;" 
+                      *ngFor="let photo of oferta?.photos">
+
+                      <img [src]="photo?.url" class="img-thumbnail" width="100%">
+                    
+                      <button type="button"
+                        (click)="removeFoto(photo.id, oferta)"
+                        style="width: 100%; font-size: 0.8em; text-align: center;"
+                        class="d-block btn btn-sm btn-link text-danger rounded ml-0 mr-0">Remover</button>
+                    </p>  
+                    
+                  </div>
+                </section>
+                
+
+              </form>
+            </div>
+      
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default rounded" (click)="close()">Cancel
+              </button>
+      
+              <input type="submit" [disabled]="!formulario.valid ? 'disabled': ''"
+                class="btn btn-warning rounded" value="Atualizar" form="formulario">
+      
+            </div>
+          </div>
+        </div>
+      </div>

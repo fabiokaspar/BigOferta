@@ -1,14 +1,14 @@
 import { AuthService } from './../_services/auth.service';
-import { ItemCarrinho } from "./../_models/item-carrinho";
-import { CarrinhoService } from "./../_services/carrinho.service";
-import { Component, OnInit } from "@angular/core";
-import { Oferta } from "../_models/oferta";
-import { ActivatedRoute } from "@angular/router";
+import { ItemCarrinho } from './../_models/item-carrinho';
+import { CarrinhoService } from './../_services/carrinho.service';
+import { Component, OnInit } from '@angular/core';
+import { Oferta } from '../_models/oferta';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: "app-oferta",
-  templateUrl: "./oferta.component.html",
-  styleUrls: ["./oferta.component.css"]
+  selector: 'app-oferta',
+  templateUrl: './oferta.component.html',
+  styleUrls: ['./oferta.component.css']
 })
 export class OfertaComponent implements OnInit {
   public oferta: Oferta;
@@ -24,7 +24,7 @@ export class OfertaComponent implements OnInit {
     this.route.data.subscribe((data: Oferta) => {
       this.oferta = data['offer'];
       this.ofertaAdicionada = this.carrinhoService.cartContainsOffer(this.oferta.id);
-      console.log("recebi oferta do resolver!", this.oferta);
+      console.log('recebi oferta do resolver!', this.oferta);
 
     }, error => {
       console.log(error)
@@ -38,6 +38,8 @@ export class OfertaComponent implements OnInit {
   }
 
   public criaItemCarrinho(): void {
+    // debugger;
+
     const item: ItemCarrinho = new ItemCarrinho(
       this.oferta.id,
       this.oferta.category,
@@ -46,7 +48,7 @@ export class OfertaComponent implements OnInit {
       this.oferta.advertiser,
       this.oferta.price,
       0,
-      this.oferta.photos[0].url
+      (this.oferta.photos.length > 0 ? this.oferta.photos[0].url : '')
     );
 
     this.carrinhoService.adicionaItem(item, 1).subscribe();

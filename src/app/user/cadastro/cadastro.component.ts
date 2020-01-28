@@ -1,3 +1,4 @@
+import { AlertifyService } from './../../_services/alertify.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { User } from 'src/app/_models/user';
@@ -18,7 +19,8 @@ export class CadastroComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private route: Router
+    private route: Router,
+    private alertifyService: AlertifyService,
   ) { }
 
   ngOnInit() {
@@ -40,10 +42,41 @@ export class CadastroComponent implements OnInit {
 
   public passwordMatchValidator(fg: FormGroup)
   {
-    if (fg.get('password').value !== fg.get('confirmPassword').value)
+    if (!fg.get('confirmPassword').hasError('required'))
     {
-      fg.get('confirmPassword').setErrors({passwordsMismatch: true})
+      if (fg.get('password').value !== fg.get('confirmPassword').value)
+      {
+        fg.get('confirmPassword').setErrors({passwordsMismatch: true})
+      }
     }
+  }
+
+  private subscribeInRegister(user: User)
+  {
+    this.authService.register(user).subscribe(
+      (data: User) => {
+        console.log(data);
+        this.user = data;
+        this.user.password = this.formulario.get('password').value;
+
+        this.authService.login(this.user).subscribe(
+          response => {
+            console.log(response);
+
+            this.route.navigateByUrl('/');
+            this.alertifyService.success(`Seja bem-vindo ${user.userName}!`);
+          },
+          error => console.log(error)
+        );
+      },
+      error => {
+        console.log(error);
+        if (isArray(error.error))
+        {
+          this.error = error.error[0].code;
+        }
+      }
+    );
   }
 
   public submitForm()
@@ -52,42 +85,15 @@ export class CadastroComponent implements OnInit {
 
     if (this.formulario.valid)
     {
-      console.log("VALID");
       let user: User = this.formulario.value;
-
-      console.log(user)
-      this.authService.register(user).subscribe(
-        (data: User) => {
-          console.log(data);
-          this.user = data;
-          this.user.password = this.formulario.get('password').value;
-          this.authService.login(this.user).subscribe(
-            response => {
-              console.log(response);
-              this.route.navigateByUrl('/');
-              console.log(this.authService.getTokenExpirationDate())
-              console.log(this.authService.isLoggedIn())
-            },
-            error => console.log(error)
-          );
-        },
-        error => {
-          console.log(error)
-          console.log(isArray(error.error))
-          if (isArray(error.error))
-          {
-            this.error = error.error[0].code
-            console.log(this.error)
-          }
-        }
-      );
+      this.subscribeInRegister(user);
     }
-    else {
-      console.log("INVALID")
+    else
+    {
       const keysArray = [
         'name', 'email', 'username', 'password', 'confirmPassword'
       ];
-  
+
       for (const key of keysArray)
       {
         this.formulario.get(key).markAsTouched();

@@ -1,8 +1,9 @@
 import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
-import { FileUploader } from 'ng2-file-upload';
+import { FileUploader, FileItem } from 'ng2-file-upload';
 import { environment } from 'src/environments/environment';
 import { Photo } from '../_models/photo';
 import { Oferta } from '../_models/oferta';
+import { throws } from 'assert';
 
 // const URL = '/api/';
 
@@ -15,21 +16,21 @@ export class PhotoEditorComponent implements OnInit {
   uploader: FileUploader;
   hasBaseDropZoneOver = false;
   @Input() offer: Oferta;
+  @Input() url: string;
+  @Input() isUpdating: boolean;
   uploadDone: boolean;
 
   constructor() {}
 
   ngOnInit()
   {
-    this.uploadDone = false;
     this.initializeUploader();
   }
 
   public initializeUploader()
   {
-    const userId = JSON.parse(localStorage.getItem('user')).id;
-
-    const URL = `${environment.URI_API}/users/${userId}/photos/addPhotoToNewOffer`;
+    this.uploadDone = false;
+    const URL = this.url;
 
     this.uploader = new FileUploader({
       url: URL,
@@ -37,22 +38,30 @@ export class PhotoEditorComponent implements OnInit {
       isHTML5: true,
       allowedFileType: ['image'],
       removeAfterUpload: false,
+      // queueLimit: 1,
       autoUpload: false,
       maxFileSize: 10 * 1024 * 1024 // 10MB
     });
 
-    this.uploader.onBuildItemForm = (fileItem: any, form: any) => {
-      form.append('category', (this.offer.category === undefined ? '': this.offer.category));
-      form.append('title', (this.offer.category === undefined ? '': this.offer.category));
-      form.append('description', (this.offer.description === undefined ? '': this.offer.description));
-      form.append('advertiser', (this.offer.advertiser === undefined ? '': this.offer.advertiser));
-      form.append('price', (this.offer.price === undefined ? 0 : this.offer.price));
-      form.append('isHanked', (this.offer.isHanked === undefined ? false : this.offer.isHanked));
-      form.append('comoUsar', (this.offer.comoUsar === undefined ? '': this.offer.comoUsar));
-      form.append('ondeFica', (this.offer.ondeFica === undefined ? '': this.offer.ondeFica));
+    if (!this.isUpdating)
+    {
+      this.uploader.onBuildItemForm = (fileItem: FileItem, form: any) => {
+        if (this.offer.id !== undefined && this.offer.id !== null)
+        {
+          form.append('id', this.offer.id);
+        }
+        form.append('category', this.offer.category || '');
+        form.append('title', this.offer.title || '');
+        form.append('description', this.offer.description || '');
+        form.append('advertiser', this.offer.advertiser || '');
+        form.append('price', this.offer.price || 0);
+        form.append('isHanked', this.offer.isHanked || false);
+        form.append('comoUsar', this.offer.comoUsar || '');
+        form.append('ondeFica', this.offer.ondeFica || '');
+      }
     }
 
-    this.uploader.uploadAll();
+    // this.uploader.uploadAll();
 
     this.uploader.onSuccessItem = (item, response: string, status, headers) => {
       if (response)
@@ -61,8 +70,14 @@ export class PhotoEditorComponent implements OnInit {
         const res: Oferta = JSON.parse(response);
         console.log('response = ', res);
 
-        // this.offer.photos.push(res.photos[0]);
-        Object.assign(this.offer, res);
+        if (!this.isUpdating)
+        {
+          Object.assign(this.offer, res);
+        }
+        else
+        {
+          this.offer.photos.push(res);
+        }
         console.log("--------------->>>>>> ", this.offer)
       }
     };
@@ -73,7 +88,6 @@ export class PhotoEditorComponent implements OnInit {
       file.withCredentials = false;
     };
 
-    this.uploader.destroy()
   }
 
   public fileOverBase(e: any): void {

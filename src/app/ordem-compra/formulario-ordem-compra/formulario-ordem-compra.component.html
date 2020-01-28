@@ -3,7 +3,7 @@
         <p class="font-weight-bold text-dark text-center p-1 mb-0">Informe seus dados antes de
             efetivar sua compra:</p>
 
-        <form id="form1" class="clearfix formulario" [formGroup]="formulario" (ngSubmit)="efetivarCompra()">
+        <form novalidate id="form1" class="clearfix formulario" [formGroup]="formulario" (ngSubmit)="efetivarCompra()">
             <h6 class="mb-3 pb-0 text-center pl-1 border-bottom">Endereço:</h6>
 
             <div class="form-group mt-0 mb-0">
@@ -11,6 +11,12 @@
                 <label for="street" class="ml-1">Logradouro: </label>
                 <input type="text" id="street" formControlName="street" placeholder="ex: Rua das Flores"
                     class="form-control w-75 rounded">
+                
+                <div *ngIf="formulario?.get('street').hasError('required') && 
+                    formulario?.get('street').touched" class="msg-invalid mb-0 mt-1">
+                Informe o logradouro
+                </div>
+
             </div>
 
             <div class="form-group mt-0 mb-0">
@@ -18,20 +24,63 @@
                 <label for="number" class="ml-1 mt-3">Número: </label>
                 <input type="text" id="number" formControlName="number" placeholder="Número"
                     class="form-control w-75 rounded">
+
+                <div *ngIf="formulario?.get('number').hasError('required') && 
+                    formulario?.get('number').touched" class="msg-invalid mb-0 mt-1">
+                Informe o número
+                </div>
+
+                <div *ngIf="formulario?.get('number').hasError('maxlength') && 
+                    formulario?.get('number').touched" class="msg-invalid mb-0 mt-1">
+                Número não deve exceder 5 caracteres
+                </div>
             </div>
 
-            <span class="text-danger mr-1">*</span>
-            <label for="city" class="ml-1 mt-3">Cidade: </label>
-            <input type="text" id="city" formControlName="city" placeholder="Cidade" class="form-control rounded w-75">
+            <div class="form-group mt-0 mb-0">
+                <span class="text-danger mr-1">*</span>
+                <label for="city" class="ml-1 mt-3">Cidade: </label>
+                <input type="text" id="city" formControlName="city" placeholder="Cidade" class="form-control rounded w-75">
+                
+                <div *ngIf="formulario?.get('city').hasError('required') && 
+                    formulario?.get('city').touched" class="msg-invalid mb-0 mt-1">
+                Informe a cidade
+                </div>
+            </div>
 
-            <span class="text-danger mr-1">*</span>
-            <label for="district" class="ml-1 mt-3">Bairro: </label>
-            <input type="text" id="district" formControlName="district" placeholder="Bairro"
+            <div class="form-group mt-0 mb-0">
+
+                <span class="text-danger mr-1">*</span>
+                <label for="district" class="ml-1 mt-3">Bairro: </label>
+                <input type="text" id="district" formControlName="district" placeholder="Bairro"
                 class="form-control rounded w-75">
 
-            <label for="phoneNumber" class="ml-1 mt-3">Tel / Cel: </label>
-            <input type="text" id="phoneNumber" formControlName="phoneNumber" placeholder="+55 11 94000-1111"
-                class="form-control rounded w-75">
+                <div *ngIf="formulario?.get('district').hasError('required') && 
+                    formulario?.get('district').touched" class="msg-invalid mb-0 mt-1">
+                Informe o bairro
+                </div>
+            </div>
+            
+            <div class="form-group mt-0 mb-0">
+
+                <label for="phoneNumber" class="ml-1 mt-3">Tel / Cel: </label>
+                <input type="text" id="phoneNumber" formControlName="phoneNumber" placeholder="+55 11 94000-1111"
+                    class="form-control rounded w-75">
+                
+                <div *ngIf="formulario?.get('phoneNumber').hasError('required') && 
+                    formulario?.get('phoneNumber').touched" class="msg-invalid mb-0 mt-1">
+                Informe o tel/cel
+                </div>
+
+                <div *ngIf="formulario?.get('phoneNumber').hasError('minlength') && 
+                    formulario?.get('phoneNumber').touched" class="msg-invalid mb-0 mt-1">
+                Número de telefone deve conter 8 caracteres no mínimo
+                </div>
+
+                <div *ngIf="formulario?.get('phoneNumber').hasError('maxlength') && 
+                    formulario?.get('phoneNumber').touched" class="msg-invalid mb-0 mt-1">
+                Número de telefone deve conter 20 caracteres no máximo
+                </div>
+            </div>
 
             <label for="idDataNasc" class="ml-1 mt-3">Data de Nascimento: </label>
             <input type="text" id="idDataNasc" formControlName="dateOfBirth" placeholder="Clique para informar a data"
@@ -39,14 +88,21 @@
 
             <div class="form-group mt-4 mb-0">
                 <span class="text-danger mr-1">*</span>
-                <label for="country" class="mr-2 ml-1">País: </label>
+                <label for="country" class="mr-2">País: </label>
                 <input type="text" id="country" formControlName="country" value="Brasil" placeholder="País"
-                    class="form-control rounded w-50 d-inline-block">
+                    class="form-control rounded w-50">
+        
+                <div *ngIf="formulario?.get('country').hasError('required') && 
+                    formulario?.get('country').touched" class="msg-invalid mb-0 mt-1">
+                    Informe o país
+                </div>
+            </div>
 
-                <span class="text-danger mr-1 ml-5">*</span>
-                <label for="state" class="mr-1 d-inline-block">Estado: </label>
+            <div class="form-group mt-4 mb-0">
+                <span class="text-danger mr-1">*</span>
+                <label for="state" class="mr-2">Estado: </label>
                 <select id="state" formControlName="state" class="ls-select rounded">
-                    <option value="selected" selected="selected">Selecione</option>
+                    <option value="" selected disabled hidden>Selecione</option>
                     <option value="AC">AC</option>
                     <option value="AL">AL</option>
                     <option value="AP">AP</option>
@@ -75,6 +131,12 @@
                     <option value="SE">SE</option>
                     <option value="TO">TO</option>
                 </select>
+
+                <div style="margin-left: 10%;" 
+                    *ngIf="formulario?.get('state').hasError('required') && 
+                    formulario?.get('state').touched" class="msg-invalid mb-0 mt-1">
+                Informe o estado
+                </div>
             </div>
             <h6 class="mb-3 mt-4 pb-1 text-center pl-1 border-bottom">Dados de Pagamento:</h6>
 
@@ -84,16 +146,38 @@
                     Cartão de Crédito <span style="font-size: 0.7em;">(sem espaços, pontos ou hífens):</span>
                 </label>
                 <input type="password" id="card" formControlName="card" placeholder="Número do cartão (16 dígitos)"
-                    maxlength="16" class="form-control d-inline-block rounded w-50 ml-2">
+                    maxlength="16" class="form-control rounded w-50 ml-2">
+                
+                <div *ngIf="formulario?.get('card').hasError('required') && 
+                    formulario?.get('card').touched" class="msg-invalid mb-0 mt-1">
+                Informe o número do cartão
+                </div>
 
+                <div *ngIf="formulario?.get('card').hasError('pattern') && 
+                    formulario?.get('card').touched" class="msg-invalid mb-0 mt-1">
+                Número do cartão deve conter 16 dígitos
+                </div>
+            </div>
+            
+            <div class="form-group mt-4 mb-0">
                 <label for="cvv" class="ml-0 mt-3">
                     <span class="text-danger mr-1">*</span>
                     Código de Segurança <span style="font-size: 0.7em;">(CVV)</span>:
                 </label>
+
                 <input type="password" id="cvv" formControlName="cvv" placeholder="3 dig." maxlength="3"
                     class="form-control d-inline-block rounded ml-2" 
                     style="width: 9%;">
 
+                <div *ngIf="formulario?.get('cvv').hasError('required') && 
+                    formulario?.get('cvv').touched" class="msg-invalid mb-0 mt-1">
+                Informe o código de segurança
+                </div>
+
+                <div *ngIf="formulario?.get('cvv').hasError('pattern') && 
+                    formulario?.get('cvv').touched" class="msg-invalid mb-0 mt-1">
+                Código de segurança deve conter 3 dígitos
+                </div>
             </div>
 
 
@@ -101,8 +185,8 @@
                 type="submit"
                 value="Efetivar Compra">
 
-            <button *ngIf="authService.getCurrentUser().street !== null" 
-                (click)="showFormulario=false"
+            <button *ngIf="authService.getUser().street !== null" 
+                (click)="showFormulario=false; scrollUp();"
                 class="btn btn-sm btn-outline-secondary rounded float-right mr-2 mt-0">
                 Cancelar
             </button>
@@ -165,7 +249,7 @@
             Efetivar Compra
         </button>
 
-        <button (click)="showFormulario=true"
+        <button (click)="showFormulario=true; scrollUp();"
             class="btn btn-sm btn-outline-secondary rounded float-right mr-2 mb-2 mt-3">
             Editar
         </button>
