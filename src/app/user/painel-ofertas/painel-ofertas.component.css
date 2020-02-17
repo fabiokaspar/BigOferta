@@ -1,3 +1,8 @@
+.container {
+    position: relative;
+    top: 10em;
+}
+
 .add {
     font-weight: 500;
 }
@@ -65,4 +70,15 @@ td a:hover {
     cursor: pointer;
     color: black;
     text-decoration-line: underline;
+}
+
+@media(max-width: 575.98px) {
+    .container {
+        position: relative;
+        top: 8em;
+    }
+
+    .add {
+        margin: 5% 0 !important;
+    }
 }

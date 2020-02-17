@@ -3,23 +3,32 @@
     top: 0;
 }
 
+nav {
+    padding: 0 !important;
+}
+
 .nav-link, .nav-link:visited {
-    color: #fff;
+    color: #000 !important;
 }
 
 .nav-link:hover {
-    background-color: rgb(50, 50, 65);
-    color: #fff;
+    background-color: rgb(50, 50, 65) !important;
+    color: #fff !important;
 }
 
 .nav-link:active {
-    background-color: rgb(50, 50, 65);
-    color: #fff;
+    background-color: rgb(50, 50, 65) !important;
+    color: #fff !important;
 }
 
 .nav-link:focus {
-    background-color: rgb(22, 150, 33);
-    color: #fff;
+    background-color: rgb(22, 150, 33) !important;
+    color: #fff !important;
+}
+
+input {
+    min-width: 200px;
+    max-width: 300px;
 }
 
 .area-logo {
@@ -30,6 +39,11 @@
 .carrinho img {
     width: 70%;
     opacity: 0.9;
+}
+
+.navbar button {
+    background: #fff !important;
+    border: 1px solid #efefef;
 }
 
 a.carrinho:hover img {
@@ -47,16 +61,14 @@ a.preco-carrinho {
     border: none;
     color: white;
     padding: 0;
-    /* text-align: center; */
     text-decoration: none;
-    /* display: inline-block; */
     font-size: 0.8em;
     border-radius: 10%;
-    /* float: right; */
     z-index: 10;
-    /* position: relative; */
-    /* left: 50px; */
-    /* top: 45px; */
+}
+
+a.preco-carrinho {
+    padding-left: 0px !important;
 }
 
 .dropdown-menu a {
@@ -73,5 +85,154 @@ a.preco-carrinho {
 .dropdown-menu {
     min-width: 0px;
     max-width: 100px;
-    margin-left: 55%;
+    margin-left: 0px;
 }
+
+.resultado-pesquisa {
+    position: absolute;
+    top: 45px;
+    left: 130px;
+    width: 280px;
+    font-size: 0.9em;
+}
+
+
+@media (max-width: 575.98px) {
+    a.preco-carrinho {
+        padding: 0px !important;
+    }
+
+    img {
+        display: none;
+    }
+
+    input {
+        max-width: 150px;
+        margin-left: 0px;    
+    }
+
+    .carrinho-group {
+        width: 40px;
+        font-size: 0.7em;
+        margin: 0;
+    }
+
+    .profile {
+        width: 35px;
+        line-height: 1.5em;
+        margin-right: 0 !important;
+        margin-left: 2px !important;
+    }
+    
+    .profile img {
+        margin-left: 4px !important;
+        margin-right: 1px !important;
+    }
+
+    .profile ul {
+        font-size: 0.8em;
+    }
+
+    .profile ul a {
+        padding: 1px !important;
+    }
+
+    .dropdown-menu {
+        margin-left: -30px;
+        padding: 0;
+    }
+
+    .logo img {
+        margin-right: 0px !important;
+    }
+
+    .resultado-pesquisa {
+        position: absolute;
+        top: 40px;
+        left: 15px;
+        width: 200px;
+        font-size: 0.9em;
+    }
+
+    .resultado-pesquisa a {
+        padding-top: 3px;
+        padding-bottom: 3px;
+    }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {  
+    button {
+        display: hidden;
+        margin-left: 0 !important;
+    }
+
+    ul.navbar-nav li {
+        font-size: 0.8em !important;
+    }
+
+    .navbar-brand {
+        font-size: 0.8em;
+        margin-left: 5px !important;
+    }
+
+    .logo img {
+        margin-right: 10px !important;
+    }
+
+    .profile {
+        width: 35px;
+        line-height: 1.5em;
+    }
+
+    .profile ul a {
+        padding: 1px !important;
+    }
+
+    .carrinho-group {
+        width: 40px;
+        font-size: 0.7em;
+        margin: 0;
+    }
+
+    a.preco-carrinho {
+        padding-left: 0px !important;
+    }
+
+    .greeting {
+        font-size: 0.7em;
+    }
+
+    .resultado-pesquisa {
+        position: absolute;
+        top: 45px;
+        left: 70px;
+        width: 280px;
+        font-size: 0.9em;
+    }
+
+    .dropdown-menu {
+        margin-left: -40px;
+        font-size: 0.9em;
+        padding: 0;
+    }
+
+    .profile ul a {
+        padding: 1px !important;
+    }
+}
+
+@media (min-width: 768px) {  
+    .logo img {
+        width: 50px !important;
+        margin: 0 30px !important;
+    }
+
+    .profile {
+        margin-right: 50px !important;
+    }
+
+    .profile img {
+        margin-left: 30px;
+    }
+}
+

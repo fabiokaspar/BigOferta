@@ -26,7 +26,8 @@ export class TopoComponent implements OnInit {
   uploader: FileUploader;
   // photoUrl;
   user: User = new User();
-
+  public isCollapsed = true;
+  
   constructor(
     public ofertasService: OfertasService,
     public authService: AuthService,

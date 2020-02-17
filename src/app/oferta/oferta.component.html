@@ -31,17 +31,18 @@
         <a *ngIf="!ofertaAdicionada; else ofertaAdicionadaTemplate" 
           (click)="criaItemCarrinho()"
           style="cursor: pointer;"
-          class="text-white font-weight-bolder btn btn-warning">
+          class="text-white font-weight-bolder btn btn-warning add">
           Adicionar oferta ao carrinho
         </a>
 
         <ng-template #ofertaAdicionadaTemplate>
-          <span class="text-white bg-success p-1 pl-2 pr-2 font-weight-bolder d-inline-block mt-2">
+          <span class="text-white text-center bg-success p-1 pl-2 pr-2 font-weight-bolder d-inline-block mt-2 oferta-adicionada">
             Oferta adicionada
           </span>
           <br>
           <a style="text-decoration-line: underline; cursor: pointer; font-size: 0.9em; color: blue;"
-            (click)="removeItemCarrinho()" class="mt-5 d-inline-block font-weight-normal ml-0 pl-0">
+          class="link-remover" 
+            (click)="removeItemCarrinho()" class="mt-2 d-inline-block font-weight-normal ml-0 pl-0">
             Remover item do carrinho
           </a>
         </ng-template>
@@ -50,8 +51,8 @@
     </div>
   </div>
 
-  <div class="mt-5 mb-5 w-50 border-bottom">
-    <tabset>
+  <div class="row w-50 mt-5 border-bottom tabset">
+    <tabset class="col-12">
       <tab heading="Como usar" id="ComoUsar">
         <span class="ml-3">Dica de como usar:</span>
         <app-como-usar [textoComoUsar]="oferta?.comoUsar"></app-como-usar>

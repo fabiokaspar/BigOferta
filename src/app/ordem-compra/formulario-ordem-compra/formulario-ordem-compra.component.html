@@ -1,5 +1,5 @@
-<div class="container clearfix w-50 border p-1" style="margin-bottom: 10%;">
-    <div *ngIf="showFormulario; else showInfoUser">
+<div class="container clearfix border p-1 mx-auto" style="">
+    <div class="form-box" *ngIf="showFormulario; else showInfoUser">
         <p class="font-weight-bold text-dark text-center p-1 mb-0">Informe seus dados antes de
             efetivar sua compra:</p>
 
@@ -84,7 +84,7 @@
 
             <label for="idDataNasc" class="ml-1 mt-3">Data de Nascimento: </label>
             <input type="text" id="idDataNasc" formControlName="dateOfBirth" placeholder="Clique para informar a data"
-                class="form-control rounded w-50"  bsDatepicker [bsConfig]="bsConfig">
+                class="form-control rounded"  bsDatepicker [bsConfig]="bsConfig">
 
             <div class="form-group mt-4 mb-0">
                 <span class="text-danger mr-1">*</span>
@@ -166,7 +166,7 @@
                 </label>
 
                 <input type="password" id="cvv" formControlName="cvv" placeholder="3 dig." maxlength="3"
-                    class="form-control d-inline-block rounded ml-2" 
+                    class="form-control cvv d-inline-block rounded ml-2" 
                     style="width: 9%;">
 
                 <div *ngIf="formulario?.get('cvv').hasError('required') && 
@@ -181,13 +181,13 @@
             </div>
 
 
-            <input class="btn btn-sm btn-outline-primary float-right rounded font-weight-bolder w-25 mr-3 mt-0" 
+            <input class="btn btn-sm btn-outline-primary float-right rounded font-weight-bolder mr-3 mt-0" 
                 type="submit"
                 value="Efetivar Compra">
 
-            <button *ngIf="authService.getUser().street !== null" 
-                (click)="showFormulario=false; scrollUp();"
-                class="btn btn-sm btn-outline-secondary rounded float-right mr-2 mt-0">
+            <button class="btn btn-sm btn-outline-secondary rounded float-right mr-1 mt-0"
+                *ngIf="authService.getUser().street !== null" 
+                (click)="showFormulario=false; scrollUp();">
                 Cancelar
             </button>
 
@@ -195,8 +195,6 @@
                 <span>(<span class="text-danger">*</span>) campo obrigatório</span>
             </div>
         </form>
-
-
     </div>
 
     <ng-template #showInfoUser>

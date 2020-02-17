@@ -1,6 +1,10 @@
 .container {
-    /* position: relative; 
-    top: 9.5em; */
+    position: relative; 
+    top: 9.5em; 
+}
+
+.imagens {
+    width: 100%;
 }
 
 .imagens img.root {
@@ -9,7 +13,7 @@
     -webkit-transform: scaleY(1.3); /* Safari 3-8 */
     transform: scaleY(1.3);
     display: block;
-    margin: 4.5em 0 3.5em;
+    margin: 20% 0;
 }
 
 .imagens img:not(root) {
@@ -18,12 +22,9 @@
     -webkit-transform: scaleY(1.3); /* Safari 3-8 */
     transform: scaleY(1.3);
     display: inline-block;
-    margin-bottom: 1.5em;
+    margin: 15% 0;
 }
 
-.imagens {
-    width: 40%;
-}
 
 .info {
     font-weight: 350;
@@ -37,9 +38,89 @@
     font-weight: 360;
 }
 
+.tabset {
+    width: 100% !important;
+    margin: 15% 0 5% !important;
+}
+
+
 @media(max-width: 575.98px) {
     .container {
         position: relative; 
-        top: 13.5em;
+        top: 6.5em;
     }
+
+    .imagens img.root {
+        width: 100%;
+        -ms-transform: scaleY(1.7); /* IE 9 */
+        -webkit-transform: scaleY(1.7); /* Safari 3-8 */
+        transform: scaleY(1.7);
+        display: block;
+    }
+
+    .imagens img:not(root) {
+        width: 80%;
+        -ms-transform: scaleY(1.6); /* IE 9 */
+        -webkit-transform: scaleY(1.6); /* Safari 3-8 */
+        transform: scaleY(1.6);
+        display: inline-block;
+        margin: 15% 0;  
+    }
+
+    .info {
+        font-weight: 350;
+        font-size: 0.9em;
+        position: absolute;
+        right: 0%;
+    }
+
+    .add {
+        padding: 0;
+        font-size: 0.8em;
+    }
+
+    span.oferta-adicionada {
+        padding: 3px !important;
+    }
+
+    a.link-remover {
+        font-size: 1.2em !important;
+        margin-top: 0 !important;
+    }
+
+    .tabset {
+        width: 100% !important;
+        margin: 20% 0 5% !important;
+    }
+}
+
+@media (min-width: 576px) {
+    
+    .imagens img.root {
+        width: 80%;
+        -ms-transform: scaleY(1.6); /* IE 9 */
+        -webkit-transform: scaleY(1.6); /* Safari 3-8 */
+        transform: scaleY(1.6);
+        display: block;
+        margin: 15% 0;  
+    }
+
+    .imagens img:not(root) {
+        width: 40%;
+        -ms-transform: scaleY(1.6); /* IE 9 */
+        -webkit-transform: scaleY(1.6); /* Safari 3-8 */
+        transform: scaleY(1.6);
+        display: inline-block;
+        margin: 7% 1%;
+    }
+
+}
+
+
+@media (min-width: 768px) {
+
+}
+
+@media (min-width: 992px) {
+
 }

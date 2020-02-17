@@ -18,12 +18,12 @@
 @media(max-width: 575.98px) {
     .container {
         position: relative; 
-        top: 13.5em;
+        top: 8.0em;
     }
 
     .card {
-        max-width: 70% !important;
-        margin-left: 20%;
+        min-width: 200px !important;
+        margin: 5px auto !important;
     }
     
     .card h4 {
@@ -37,7 +37,8 @@
 
 @media(min-width: 576px) and (max-width: 767.98px) {
     .card {
-        max-width: 90% !important;
+        min-width: 150px !important;
+        display: block;
     }
     
     .card h4 {
@@ -51,7 +52,7 @@
 
 @media(min-width: 768px)  {
     .card {
-        max-width: 85% !important;
+        min-width: 150px !important;
     }
     
     .card h4 {

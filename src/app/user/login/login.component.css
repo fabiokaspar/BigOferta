@@ -5,8 +5,8 @@
 }
 
 .container {
-    /* position: relative;
-    top: 10.0em; */
+    position: relative;
+    top: 10.0em; 
     background: #fcfcfc;
     width: 35%;
 }
@@ -33,4 +33,16 @@ form {
     opacity: 0.8;
     border: 1px dotted gray;
     background: rgba(143, 165, 206, 0.333);
+}
+
+@media (max-width: 575.98px) {
+    div.container {
+        width: 350px;
+    }
+}
+
+@media (min-width: 576px) {
+    div.container {
+        width: 400px;
+    }
 }

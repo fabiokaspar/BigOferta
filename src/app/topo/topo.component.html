@@ -1,23 +1,26 @@
+
+<!-- destaques | Restaurantes | Diversão | Cadastro gratuito | Entre com sua conta -->
 <div class="fixed-top">
-    <div class="area-logo pb-3"  style="padding-left: 10%;">
-        <div class="mx-auto container row">
+    <div class="area-logo">
+        <div class="row">
             
-            <div class="col-8 w-100" style="z-index: 100;">
+            <div class="col-8 logo" style="z-index: 100;">
+                <img src="/assets/sacola2.png"
+                    width="40"
+                    style="cursor: pointer;"
+                    routerLink="/"
+                    class="img-fluid float-left" 
+                    title="Big Oferta App" 
+                    alt="Big Oferta">
+
                 <input type="text" 
-                    class="float-right form-control rounded w-75 mt-2" 
+                    class="form-control rounded w-100 mt-2" 
                     placeholder="Pesquise por ofertas..."
                     #termoPesquisa 
                     (input)="pesquisaPorOfertas(termoPesquisa.value)">
                 
-                <img src="/assets/sacola2.png" width="50"
-                    style="cursor: pointer;"
-                    routerLink="/"
-                    class="img-fluid float-right mt-0 mr-5" 
-                    title="Big Oferta App" 
-                    alt="Big Oferta">
 
-                <div class="d-inline-block list-group" style="width: 72%; position: absolute; top: 90%; left: 26%; ">
-                    <!-- pipe async se inscreve no observable e passa a receber dados -->
+                <div class="d-inline-block list-group resultado-pesquisa">
                     <a *ngFor="let oferta of (ofertas | async)" [routerLink]="['/oferta', oferta.id]"
                         routerLinkActive="router-link-active" (click)="limpaPesquisa(oferta.id)"
                         style="z-index: 100;"
@@ -28,105 +31,104 @@
                 
             </div>
             
-            <div *ngIf="authService?.isLoggedIn()"
-                class="col-2" > 
+            <div class="col-4" *ngIf="authService?.isLoggedIn()"> 
 
-                <div class="profile d-block btn-group clearfix" style="z-index: 100000" dropdown [autoClose]="true" [insideClick]="false">
-                    <img [src]="user?.profilePhoto?.url"
+                <div class="profile d-block btn-group float-right ml-3" style="z-index: 100000" dropdown [autoClose]="true" [insideClick]="false">
+                    <img class="d-inline-block img-thumbnail img-fluid" 
+                        [src]="user?.profilePhoto?.url"
                         style="cursor: pointer;"
                         dropdownToggle
                         width="50" 
-                        class="float-right d-inline-block img-thumbnail img-fluid" 
                         alt="Foto">
-                    <ul *dropdownMenu class="dropdown-menu clearfix p-0" role="menu">
-                        <li *ngIf="user?.profilePhoto?.url === '/assets/user.png'" 
-                            class="d-block" role="menuitem">
+                    <ul class="dropdown-menu clearfix p-0" *dropdownMenu role="menu">
+                        <li class="d-block" *ngIf="user?.profilePhoto?.url === '/assets/user.png'" 
+                            role="menuitem">
                             <a class="dropdown-item text-center p-2" (click)="initializePhotoUploader(); file1.click()">             
                                 <input type="file" ng2FileSelect [uploader]="uploader" #file1 hidden>
                                 Adicionar foto
                             </a>
                         </li>
-                        <li *ngIf="user?.profilePhoto?.url !== '/assets/user.png'"
-                            class="d-block" role="menuitem">
+                        <li class="d-block" *ngIf="user?.profilePhoto?.url !== '/assets/user.png'"
+                             role="menuitem">
                             <a class="dropdown-item text-center p-2" (click)="initializePhotoUploader(); file2.click()">             
                                 <input type="file" ng2FileSelect [uploader]="uploader" #file2 hidden>
                                 Trocar foto
                             </a>
                         </li>
-                        <li *ngIf="user?.profilePhoto?.url !== '/assets/user.png'"
-                            class="d-block" role="menuitem">
+                        <li class="d-block" *ngIf="user?.profilePhoto?.url !== '/assets/user.png'"
+                             role="menuitem">
                             <a class="dropdown-item text-center p-2" (click)="removePhoto()">
                                 Remover foto
                             </a>
                         </li>
-                        
                     </ul>
                 </div>
-            </div>
 
-            <div *ngIf="authService?.isLoggedIn()" class="col-2 w-100">
-                <div style="margin-left: 0%;" class="carrinho-group ml-5 d-inline-block">
-                    <a title="seu carrinho de compras" class="carrinho d-inline-block" routerLink="/ordem-compra">
-                        <img src="/assets/carrinho.png"
-                        width="15%" 
-                        class="d-inline-block img-fluid" 
+                <div class="carrinho-group ml-2 d-inline-block float-right" style="margin-left: 0%;">
+                    <a class="carrinho d-inline-block" title="seu carrinho de compras" routerLink="/ordem-compra">
+                        <img class="d-inline-block img-fluid"  
+                        src="/assets/carrinho.png"
+                        width="15%"    
                         alt="Seu Carrinho">  
                     </a>
-                    <a routerLink="/ordem-compra" 
+                    <a class="mt-1 pl-1 d-block preco-carrinho font-weight-bolder"
+                        routerLink="/ordem-compra" 
                         title="valor total do carrinho"
-                        style="width: 100%;" 
-                        class="mt-1 pl-1 pr-1 d-block preco-carrinho font-weight-bolder">
+                        style="width: 100%;" >
                         {{carrinhoService.getPrecoTotal() | currency: 'BRL'}}
                     </a>
                 </div>
             </div>
+
         </div>
     </div>
-    <div class="bg-primary">
-        <nav class="container navbar navbar-expand-sm bg-primary navbar-dark p-0">
-            <ul class="nav navbar-nav">
-                <li class="nav-item">
-                    <a class="text-white nav-link" [routerLink]="['']" routerLinkActive="router-link-active" href="#">Destaques</a>
-                </li>
-                <li class="nav-item">
-                    <a class="text-white nav-link" [routerLink]="['/restaurante']" href="#">Restaurantes</a>
-                </li>
-                <li class="nav-item">
-                    <a class="text-white nav-link" [routerLink]="['/diversao']" href="#">Diversão</a>
-                </li>
-                <li *ngIf="authService?.isLoggedIn()" class="nav-item">
-                    <a class="text-white nav-link" [routerLink]="['/ordem-compra']" href="#">Meu carrinho</a>
-                </li>
+    
+    <div class="bg-light clearfix">
+        <span *ngIf="authService?.isLoggedIn()" class="text-primary greeting navbar-text float-right mr-5" style="cursor: context-menu;">
+            Olá, {{getUsername()}}!
+        </span>
+        <nav class="navbar navbar-expand-sm navbar-light">
+          <div class="container-fluid">
+                <div class="navbar-header">
+                  <button type="button" class="navbar-toggle collapsed ml-1" (click)="isCollapsed = !isCollapsed" aria-expanded="false">
+                      <i class="fa fa-bars" style="color: #999;"></i>
+                  </button>
+                  <a class="navbar-brand ml-3 text-success" href="#">BigOferta</a>
+                </div>
+                <div class="collapse navbar-collapse" [collapse]="isCollapsed">
+                    <ul class="nav navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link border-left border-right" [routerLink]="['']" routerLinkActive="router-link-active" href="#">Destaques</a>
+                        </li>
 
-                <li *ngIf="!authService?.isLoggedIn()" class="nav-item position-absolute"  style="right:9.5%;">
-                    <a class="text-white nav-link" [routerLink]="['/cadastro']" href="#">Cadastro gratuito</a>
-                </li>
-                <li *ngIf="authService?.isLoggedIn()" class="nav-item">
-                    <a class="text-white nav-link" [routerLink]="['/user/painel']" href="#">Painel</a>
-                </li>
-                
-                <li *ngIf="authService?.isLoggedIn()" class="nav-item">
-                    <a class="text-white nav-link" (click)="logout()" style="cursor: pointer;">Logout</a>
-                </li>
-            </ul>
-            <span class="position-absolute navbar-text"
-                style="right: -4%; cursor: context-menu;">
+                        <li class="nav-item">
+                            <a class="nav-link border-right" [routerLink]="['/restaurante']" href="#">Restaurantes</a>
+                        </li>
 
-                <span *ngIf="authService?.isLoggedIn()"
-                    class="text-white pl-2 pr-2"
-                    [title]="'Welcome '+ getUsername() + '!'">
-                    Olá, {{getUsername()}}!
-                </span>
+                        <li class="nav-item">
+                            <a class="nav-link border-right" [routerLink]="['/diversao']" href="#">Diversão</a>
+                        </li>
+                        
+                        <li *ngIf="authService?.isLoggedIn()" class="nav-item">
+                            <a class="nav-link border-right" [routerLink]="['/user/painel']" href="#">Painel de ofertas</a>
+                        </li>
+                        
+                        <li *ngIf="!authService?.isLoggedIn()" class="nav-item float-right">
+                            <a class="nav-link border-right" [routerLink]="['/cadastro']" href="#">Cadastro gratuito</a>
+                        </li>
 
-                <span *ngIf="!authService?.isLoggedIn()"
-                    [routerLink]="['/login']"
-                    style="cursor: pointer;"
-                    class="text-white nav-link pl-2 pr-2">
-                    Entre com sua conta
-                </span>
-            </span>
+                        <li *ngIf="authService?.isLoggedIn()" class="nav-item float-right">
+                            <a class="nav-link border-right" (click)="logout()" style="cursor: pointer;">Logout</a>
+                        </li>
+
+                        <li *ngIf="!authService?.isLoggedIn()" class="nav-item float-right">
+                            <a class="nav-link border-right" [routerLink]="['/login']" href="#">Entre com a sua conta</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </nav>
+        
     </div>
 </div>
-
 

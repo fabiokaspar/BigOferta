@@ -42,3 +42,22 @@ select:required:invalid {
 option[value=""][disabled] {
     display: none;
 }
+
+.modal {
+    width: 50%;
+}
+
+@media(max-width: 575.98px) {
+    .modal {
+        width: 300px;
+        margin: auto;
+    }
+
+    select {
+        width: 150px;
+    }
+
+    .box-photo {
+        width: 25% !important;
+    }
+}

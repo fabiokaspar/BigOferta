@@ -1,8 +1,9 @@
 .container 
 {
     position: relative;
-    top: 5em;
+    top: 2em;
     background: #fcfcfc;
+    width: 50%;
 }
 
 .container p {
@@ -47,5 +48,87 @@ select:invalid {
 option[value=""][disabled] {
     display: none;
 }
+
+#idDataNasc {
+    width: 30%;
+}
+
+form input.btn {
+    width: auto !important;
+}
+
+
+@media(max-width: 575.98px) {
+    .container {
+        width: 90%;
+    }
+
+    .container input {
+        width: 250px;
+        display: block;
+    }
+
+    .container select {
+        width: 60px;
+    }
+
+    .cvv {
+        width: 70px !important;
+        display: block !important;
+    }
+
+    input.btn {
+        margin: 10%;
+        width: 50% !important;
+        display: block !important;
+    }
+
+    #idDataNasc {
+        width: 180px;
+    }
+
+    div.bs-datepicker-container {
+        width: 150px;
+    }
+
+    form input.btn, form button {
+        position: relative;
+        top: 30px;
+        margin-bottom: 50px;
+    }
+}
+
+@media(min-width: 576px) and (max-width: 767.98px) {
+    .container {
+        width: 75%;
+    }
+
+    .container input {
+        width: 100%;
+        display: block;
+    }
+
+    .cvv {
+        width: 15% !important;
+        display: block !important;
+    }
+}
+
+@media(min-width: 768px) {
+    .container {
+        width: 75%;
+    }
+
+    .container input {
+        width: 100%;
+        display: block;
+    }
+
+    .cvv {
+        width: 15% !important;
+        display: block !important;
+    }
+}
+
 
 

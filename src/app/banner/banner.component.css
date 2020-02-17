@@ -1,5 +1,17 @@
+.carousel {
+	position: relative; 
+	top: 8.5em;
+}
+
 @media(max-width: 575.98px) {
     .carousel {
         display: none;
+    }
+}
+
+@media(max-width: 767.98px) {
+    .carousel {
+    	position: relative; 
+    	top: 9em;
     }
 }

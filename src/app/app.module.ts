@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CollapseModule } from 'ngx-bootstrap';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule, LOCALE_ID } from '@angular/core';
@@ -10,7 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JwtModule, JwtHelperService } from '@auth0/angular-jwt';
 import { ModalModule, BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { FileUploadModule } from 'ng2-file-upload';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { BsDropdownModule } from 'ngx-bootstrap';
 
 
 import { AppComponent } from './app.component';
@@ -44,6 +45,8 @@ import { OfertasService } from './_services/ofertas.service';
 import { AuthService } from './_services/auth.service';
 import { OfertaResolver } from './_resolvers/oferta-resolver';
 import { AlertifyService } from './_services/alertify.service';
+
+
 
 registerLocaleData(localePt, 'pt-Pt');
 defineLocale('pt-br', ptBrLocale);
@@ -87,6 +90,7 @@ export function attachToken() {
       BsDropdownModule.forRoot(),
       FormsModule,
       ReactiveFormsModule,
+      CollapseModule.forRoot(),
       JwtModule.forRoot({
          config: {
            tokenGetter: attachToken,
